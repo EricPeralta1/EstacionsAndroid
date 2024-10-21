@@ -23,7 +23,7 @@
 
     <LinearLayout
         android:id="@+id/seasonsLayout"
-        android:layout_width="0dp"
+        android:layout_width="225dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -37,19 +37,24 @@
         <!-- Imagen Invierno -->
 
 
+        <!-- Imagen Primavera -->
+
         <ImageView
             android:id="@+id/imageWinter"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <!-- Imagen Primavera -->
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:src="@drawable/winter" />
 
         <ImageView
             android:id="@+id/imageSpring"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:src="@drawable/spring"
+            android:scaleType="fitXY"
+
             />
 
         <!-- Imagen Verano -->
@@ -58,6 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:src="@drawable/summer"
+            android:scaleType="fitXY"
             />
 
         <!-- Imagen Otoño -->
@@ -66,6 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:src="@drawable/autumn"
+            android:scaleType="fitXY"
             />
 
     </LinearLayout>
