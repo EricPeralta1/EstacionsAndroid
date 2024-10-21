@@ -1,0 +1,73 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4A8A8"
+    tools:context=".MainActivity">
+
+    <!-- Cuadro amarillo -->
+
+    <ImageView
+        android:id="@+id/itemSquare"
+        android:layout_width="181dp"
+        android:layout_height="182dp"
+        android:layout_marginTop="112dp"
+        android:background="#d1d1d1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.214"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- LinearLayout para las imágenes de las estaciones -->
+
+    <LinearLayout
+        android:id="@+id/seasonsLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@id/itemSquare"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_percent="0.4">
+
+        <!-- Imagen Invierno -->
+
+
+        <ImageView
+            android:id="@+id/imageWinter"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Imagen Primavera -->
+
+        <ImageView
+            android:id="@+id/imageSpring"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <!-- Imagen Verano -->
+        <ImageView
+            android:id="@+id/imageSummer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <!-- Imagen Otoño -->
+        <ImageView
+            android:id="@+id/imageAutumn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
