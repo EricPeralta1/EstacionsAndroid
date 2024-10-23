@@ -8,7 +8,6 @@ class AvatarActivity : AppCompatActivity() {
     private lateinit var adapter : AvatarAdapter
     private lateinit var lstAvatar : GridView
 
-
     private var avatarlist = mutableListOf(
         Avatar("batman",1),
         Avatar("mate",  2),
@@ -27,14 +26,14 @@ class AvatarActivity : AppCompatActivity() {
         Avatar("stitch",16),
         Avatar("superman",18))
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.avatarlayout)
-
-        updateAdapter(avatarlist)
+        updateAdapter()
 
     }
-    private fun updateAdapter( data: List<Avatar>){
+    private fun updateAdapter(){
         lstAvatar = findViewById(R.id.AvatarView)
         adapter = AvatarAdapter(this,R.layout.avatarimage,avatarlist)
         lstAvatar.adapter = adapter
