@@ -1,4 +1,3 @@
 package com.example.estacionsandroid
 
-class Avatar(var img: String, val id: Int) {
-}
+class Avatar(var img: String, val id: Int)
