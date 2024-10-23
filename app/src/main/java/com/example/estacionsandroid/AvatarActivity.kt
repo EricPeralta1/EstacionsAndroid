@@ -2,12 +2,9 @@ package com.example.estacionsandroid
 
 import android.os.Bundle
 import android.widget.GridView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
-class MainActivity : AppCompatActivity() {
+class AvatarActivity : AppCompatActivity() {
     private lateinit var adapter : AvatarAdapter
     private lateinit var lstAvatar : GridView
 
