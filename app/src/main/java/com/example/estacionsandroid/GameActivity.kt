@@ -23,7 +23,6 @@ class GameActivity : AppCompatActivity() {
         Item("raincoat", 4))
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamelayout)
@@ -31,6 +30,10 @@ class GameActivity : AppCompatActivity() {
         setImage(figureList)
 
     }
+
+    //Sdadsadd
+    //dasdjsi
+    //asdajkdhd
 
     private fun setImage(data: List<Item>) {
         val randomIndex = Random().nextInt(data.size)
