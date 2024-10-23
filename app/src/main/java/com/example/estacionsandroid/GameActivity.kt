@@ -33,6 +33,7 @@ class GameActivity : AppCompatActivity() {
 
     //Sdadsadd
     //dasdjsi
+    //asdajkdhd
 
     private fun setImage(data: List<Item>) {
         val randomIndex = Random().nextInt(data.size)
