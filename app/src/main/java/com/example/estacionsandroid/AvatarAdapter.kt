@@ -19,7 +19,7 @@ class AvatarAdapter (val activity: Context, val layout: Int, val data: List<Avat
 
 
         val avatar = view?.findViewById<ImageView>(R.id.ImgAvatar)
-        val id = activity.resources.getIdentifier(data[position].img, "drawable", activity.packageName)
+        val id = activity.resources.getIdentifier(data[position].name, "drawable", activity.packageName)
 
         avatar?.setImageResource(id)
 
