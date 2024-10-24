@@ -6,22 +6,24 @@
 
     <!-- Outer frame (gray) -->
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="360dp"
-        android:layout_centerInParent="true"
+        android:layout_width="1026dp"
+        android:layout_height="549dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginEnd="131dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="121dp"
         android:background="#808080">
 
         <!-- Video View (red) -->
         <VideoView
             android:id="@+id/tutorialLevel"
-            android:layout_width="646dp"
-            android:layout_height="309dp"
+            android:layout_width="939dp"
+            android:layout_height="457dp"
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:background="#8B0000" />

@@ -5,13 +5,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     card_view:cardElevation="3dp"
-    card_view:cardBackgroundColor="@color/material_dynamic_neutral10"
     >
 
     <ImageView
         android:id="@+id/ImgAvatar"
         android:layout_width="160dp"
         android:layout_height="160dp"
+        android:background="@drawable/rounded_image"
+        android:clipToOutline="true"
         />
 
 </androidx.cardview.widget.CardView>
