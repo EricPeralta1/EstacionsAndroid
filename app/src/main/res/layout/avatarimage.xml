@@ -5,7 +5,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     card_view:cardElevation="3dp"
-    card_view:cardBackgroundColor="@color/material_dynamic_neutral10"
     >
 
     <ImageView

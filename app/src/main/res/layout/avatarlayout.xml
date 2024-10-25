@@ -53,7 +53,7 @@
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="80dp"
                 android:layout_marginRight="25dp"
-                android:background="@color/material_dynamic_neutral10" />
+             />
 
             <ImageView
                 android:id="@+id/startButton"
