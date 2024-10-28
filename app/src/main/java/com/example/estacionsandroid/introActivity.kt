@@ -6,22 +6,19 @@ import android.os.Bundle
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 
-class introActivity : AppCompatActivity() {
-
-    private lateinit var videoView: VideoView
-
+class IntroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.introlayout)
 
-        startVideoTutorial()
-    }
+        val videoView: VideoView = findViewById(R.id.tutorialLevel)
+        val videoPath : String = ("android.resource://" + packageName + "/" + R.raw.example)
+        val uri : Uri = Uri.parse(videoPath)
 
-    private fun startVideoTutorial(){
-        videoView = findViewById(R.id.tutorialLevel)
+        videoView.setVideoURI(uri)
 
-        val videoUri: Uri = Uri.parse("android.resource://res/" + R.raw.tutorial)
-        videoView.setVideoURI(videoUri)
+        videoView.start()
+
 
         videoView.setOnCompletionListener {
             val intent = Intent(this, GameActivity::class.java)
@@ -29,9 +26,5 @@ class introActivity : AppCompatActivity() {
             finish()
         }
 
-        videoView.start()
-
     }
-
-
 }

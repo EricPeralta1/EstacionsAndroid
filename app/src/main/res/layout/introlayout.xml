@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="#D3D3D3">
 
-    <!-- Outer frame (gray) -->
     <FrameLayout
         android:layout_width="1026dp"
         android:layout_height="549dp"
@@ -19,14 +18,13 @@
         android:layout_marginBottom="121dp"
         android:background="#808080">
 
-        <!-- Video View (red) -->
         <VideoView
             android:id="@+id/tutorialLevel"
             android:layout_width="939dp"
             android:layout_height="457dp"
             android:layout_gravity="center"
             android:layout_margin="16dp"
-            android:background="#8B0000" />
+            />
 
     </FrameLayout>
 </RelativeLayout>

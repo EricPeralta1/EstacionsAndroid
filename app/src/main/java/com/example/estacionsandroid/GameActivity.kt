@@ -12,14 +12,14 @@ class GameActivity : AppCompatActivity() {
         Item("naranja",  3),
         Item("verde",  4))
 
-    private var figureList = mutableListOf(Item("coponieve",  1),
-        Item("flor",  2),
-        Item("sol",  3),
-        Item("hoja",  4))
+    private var figureList = mutableListOf(Item("snow",  1),
+        Item("flower",  2),
+        Item("sun",  3),
+        Item("leaf",  4))
 
-    private var ClothesList = mutableListOf(Item("banadorhombre",  1),
-        Item("gorra",  2),
-        Item("kimonoprim",  3),
+    private var ClothesList = mutableListOf(Item("swimsuit",  1),
+        Item("scarf",  2),
+        Item("flowertshirt",  3),
         Item("raincoat", 4))
 
 
@@ -31,9 +31,6 @@ class GameActivity : AppCompatActivity() {
 
     }
 
-    //Sdadsadd
-    //dasdjsi
-    //asdajkdhd
 
     private fun setImage(data: List<Item>) {
         val randomIndex = Random().nextInt(data.size)
