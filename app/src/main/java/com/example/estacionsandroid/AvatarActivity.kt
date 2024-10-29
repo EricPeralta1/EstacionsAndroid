@@ -2,6 +2,7 @@ package com.example.estacionsandroid
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.GridView
@@ -71,8 +72,10 @@ class AvatarActivity : AppCompatActivity() {
             intent.putExtra("Avatar_ID", avatarId)
             intent.putExtra("Avatar_Name", avatarName)
             startActivity(intent)
+            Log.d("AvatarActivity", "Starting IntroActivity with Avatar_ID: $avatarId and Avatar_Name: $avatarName")
 
             finish()
         }
     }
+
 }
