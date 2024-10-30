@@ -2,13 +2,14 @@ package com.example.estacionsandroid
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+
 
 class AvatarActivity : AppCompatActivity() {
     private lateinit var adapter : AvatarAdapter
@@ -42,6 +43,14 @@ class AvatarActivity : AppCompatActivity() {
         confirmAvatarLayout = findViewById(R.id.confirmAvatarLayout)
         updateAdapter()
         setupAvatarClickListener()
+        supportActionBar?.hide()
+
+
+        window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_FULLSCREEN or
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                )
     }
 
 
@@ -66,13 +75,13 @@ class AvatarActivity : AppCompatActivity() {
         }
     }
 
+
     private fun setupStartGameClickListener(avatarId: Int, avatarName: String) {
         confirmAvatarLayout.setOnClickListener{
             val intent= Intent(this, IntroActivity::class.java)
             intent.putExtra("Avatar_ID", avatarId)
             intent.putExtra("Avatar_Name", avatarName)
             startActivity(intent)
-            Log.d("AvatarActivity", "Starting IntroActivity with Avatar_ID: $avatarId and Avatar_Name: $avatarName")
 
             finish()
         }
