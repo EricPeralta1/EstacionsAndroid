@@ -18,20 +18,20 @@ class AvatarActivity : AppCompatActivity() {
     private var avatarlist = mutableListOf(
         Avatar("batman",1),
         Avatar("mate",  2),
-        Avatar("merida",  4),
-        Avatar("pikachu",5),
-        Avatar("bluey",6),
-        Avatar("cenicienta",7),
-        Avatar("cruzramirez",8),
-        Avatar("francesco",9),
-        Avatar("ironman",10),
-        Avatar("jasmine",11),
-        Avatar("rayomcqueen",12),
-        Avatar("sally",13),
-        Avatar("simba",14),
-        Avatar("spiderman",15),
-        Avatar("stitch",16),
-        Avatar("superman",18))
+        Avatar("merida",  3),
+        Avatar("pikachu",4),
+        Avatar("bluey",5),
+        Avatar("cenicienta",6),
+        Avatar("cruzramirez",7),
+        Avatar("francesco",8),
+        Avatar("ironman",9),
+        Avatar("jasmine",10),
+        Avatar("rayomcqueen",11),
+        Avatar("sally",12),
+        Avatar("simba",13),
+        Avatar("spiderman",14),
+        Avatar("stitch",15),
+        Avatar("superman",16))
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
