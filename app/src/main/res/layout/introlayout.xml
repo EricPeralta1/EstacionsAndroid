@@ -1,30 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D3D3D3">
+    android:background="#D3D3D3"
+    >
 
-    <FrameLayout
-        android:layout_width="1026dp"
-        android:layout_height="549dp"
+    <VideoView
+        android:id="@+id/tutorialLevel"
+        android:layout_width="904dp"
+        android:layout_height="508dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.592"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:layout_width="1298dp"
+        android:layout_height="785dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="130dp"
-        android:layout_marginEnd="131dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="121dp"
-        android:background="#808080">
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/tvintro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
-        <VideoView
-            android:id="@+id/tutorialLevel"
-            android:layout_width="939dp"
-            android:layout_height="457dp"
-            android:layout_gravity="center"
-            android:layout_margin="16dp"
-            />
-
-    </FrameLayout>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

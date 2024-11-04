@@ -1,8 +1,10 @@
 package com.example.estacionsandroid
 
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import java.util.Random
 
 class GameActivity : AppCompatActivity() {
@@ -29,6 +31,9 @@ class GameActivity : AppCompatActivity() {
 
         setImage(figureList)
 
+        val gameLayoutBackground = findViewById<ConstraintLayout>(R.id.gameLayoutBackground)
+        val animationDrawable = gameLayoutBackground.background as AnimationDrawable
+        animationDrawable.start()
     }
 
 

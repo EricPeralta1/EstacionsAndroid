@@ -3,30 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4A8A8"
+    android:background="@drawable/animationgamelayout"
+    android:id="@+id/gameLayoutBackground"
+    android:scaleType="centerCrop"
     tools:context=".GameActivity">
 
     <ImageView
         android:id="@+id/itemView"
         android:layout_width="357dp"
         android:layout_height="361dp"
-        android:layout_marginStart="196dp"
-        android:layout_marginBottom="216dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginBottom="244dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:id="@+id/seasonsLayout"
-        android:layout_width="450dp"
-        android:layout_height="0dp"
+        android:layout_width="325dp"
+        android:layout_height="700dp"
+        android:layout_marginStart="625dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@id/itemView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintWidth_percent="0.4">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageWinter"
@@ -41,8 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:src="@drawable/spring"
             android:scaleType="fitXY"
+            android:src="@drawable/spring"
 
             />
 
@@ -51,18 +51,16 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:src="@drawable/summer"
             android:scaleType="fitXY"
-            />
+            android:src="@drawable/summer" />
 
         <ImageView
             android:id="@+id/imageAutumn"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:src="@drawable/autumn"
             android:scaleType="fitXY"
-            />
+            android:src="@drawable/autumn" />
 
     </LinearLayout>
 
