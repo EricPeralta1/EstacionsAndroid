@@ -1,10 +1,12 @@
 package com.example.estacionsandroid
 
+import android.graphics.drawable.AnimationDrawable
 import android.media.Image
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.coroutineScope
@@ -48,6 +50,10 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamelayout)
+
+        val gameLayoutBackground = findViewById<ConstraintLayout>(R.id.gameLayoutBackground)
+        val animationDrawable = gameLayoutBackground.background as AnimationDrawable
+        animationDrawable.start()
 
         tempList.addAll(colorList)
         setImage(tempList)
