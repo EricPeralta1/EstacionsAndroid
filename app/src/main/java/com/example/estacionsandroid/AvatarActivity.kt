@@ -77,7 +77,7 @@ class AvatarActivity : AppCompatActivity() {
 
     private fun setupStartGameClickListener(avatarId: Int, avatarName: String) {
         confirmAvatarLayout.setOnClickListener{
-            val intent= Intent(this, IntroActivity::class.java)
+            val intent= Intent(this, GameActivity::class.java)
             intent.putExtra("Avatar_ID", avatarId)
             intent.putExtra("Avatar_Name", avatarName)
             startActivity(intent)
