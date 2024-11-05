@@ -68,7 +68,6 @@ class AvatarActivity : AppCompatActivity() {
             avatarCopy.visibility = ImageView.VISIBLE
             startButton.visibility = ImageView.VISIBLE
             createAvatarSelectedAnimation()
-            createButtonAnimation()
 
             val selectedAvatar= avatarlist[position]
 
@@ -114,15 +113,13 @@ class AvatarActivity : AppCompatActivity() {
         val animationSequenceButton = AnimationSet(false)
         val zoomButton = AnimationUtils.loadAnimation(this, R.anim.zoom_animation)
         val rotateButton = AnimationUtils.loadAnimation(this, R.anim.rotate_animation)
-
         animationSequenceButton.addAnimation(zoomButton)
         animationSequenceButton.addAnimation(rotateButton)
 
 
         startButton.startAnimation(animationSequenceButton)
 
-
-    }
+}
 
 
 }
