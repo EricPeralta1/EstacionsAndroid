@@ -17,15 +17,13 @@ class EndGameActivity : AppCompatActivity() {
                         View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 )
         val avatarImageView = findViewById<ImageView>(R.id.avatarPlaceholder)
-
-        val bundle: Bundle? = intent.extras
-        val avatarId = bundle?.getInt("Avatar_ID", 0)
-        val avatarName = bundle?.getString("Avatar_Name")
+        val avatarName = intent.getStringExtra("Avatar_Name")
 
 
 
-            val avatarResourceId = resources.getIdentifier(avatarName, "drawable", packageName)
-            avatarImageView.setImageResource(avatarResourceId)
+
+        val avatarResourceId = resources.getIdentifier(avatarName, "drawable", packageName)
+        avatarImageView.setImageResource(avatarResourceId)
 
 
 

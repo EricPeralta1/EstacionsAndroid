@@ -1,8 +1,10 @@
 package com.example.estacionsandroid
 
+import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.media.Image
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -51,10 +53,11 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamelayout)
 
-        val gameLayoutBackground = findViewById<ConstraintLayout>(R.id.gameLayoutBackground)
-        val animationDrawable = gameLayoutBackground.background as AnimationDrawable
-        animationDrawable.start()
-
+        window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_FULLSCREEN or
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                )
         tempList.addAll(colorList)
         setImage(tempList)
         val winterImage: ImageView = findViewById(R.id.imageWinter)
@@ -148,7 +151,7 @@ class GameActivity : AppCompatActivity() {
                 if (firstTime) {
 
                         setCongratsImage()
-                        delay(5000)
+                        delay(50)
 
                     tempList.addAll(figureList)
                 }
@@ -160,12 +163,21 @@ class GameActivity : AppCompatActivity() {
                 GlobalScope.launch(Dispatchers.Main){
                     if (firstTime) {
                         setCongratsImage()
-                        delay(5000)
+                        delay(50)
 
                         tempList.addAll(clothesList)
                     }
                     setImage(tempList)
                 }
+            }
+
+            4 -> {
+                val avatarName = intent.getStringExtra("Avatar_Name")
+                val intent= Intent(this, EndGameActivity::class.java)
+                intent.putExtra("Avatar_Name", avatarName)
+                startActivity(intent)
+                finish()
+
             }
 
             else -> println("wtf, just how did we get here")
@@ -189,7 +201,7 @@ class GameActivity : AppCompatActivity() {
 
         imageView.setImageResource(imageResId)
         tempList.remove(data[randomIndex])
-        if (tempList.isEmpty() && level < 3) {
+        if (tempList.isEmpty() && level < 4) {
             level += 1
             firstTime = true
         }

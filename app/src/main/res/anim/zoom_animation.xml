@@ -5,21 +5,21 @@
     <scale
         android:interpolator="@android:anim/linear_interpolator"
         android:duration = "1000"
-        android:fromXScale = "200dp"
-        android:fromYScale = "200dp"
+        android:fromXScale = "50dp"
+        android:fromYScale = "50dp"
         android:pivotX = "50%"
         android:pivotY = "50%"
-        android:toXScale = "2"
-        android:toYScale = "2"/>
+        android:toXScale = "1"
+        android:toYScale = "1"/>
 
     <scale
         android:interpolator="@android:anim/linear_interpolator"
         android:duration="1000"
-        android:fromXScale="150dp"
-        android:fromYScale="150dp"
+        android:fromXScale="75dp"
+        android:fromYScale="75dp"
         android:pivotX="50%"
         android:pivotY="50%"
-        android:toXScale="1"
-        android:toYScale="1"/>
+        android:toXScale="2"
+        android:toYScale="2"/>
 
 </set>

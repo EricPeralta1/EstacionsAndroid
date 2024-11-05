@@ -24,15 +24,11 @@ class IntroActivity : AppCompatActivity() {
         videoView.setVideoURI(uri)
         videoView.start()
 
-        val avatarId = intent.getIntExtra("Avatar_ID",0)
         val avatarName = intent.getStringExtra("Avatar_Name")
 
         videoView.setOnCompletionListener {
-            val intent = Intent(this, EndGameActivity::class.java)
-            val bundle = Bundle()
-            bundle.putInt("Avatar_ID", avatarId)
-            bundle.putString("Avatar_Name", avatarName)
-            intent.putExtras(bundle)
+            val intent = Intent(this, GameActivity::class.java)
+            intent.putExtra("Avatar_Name", avatarName)
             startActivity(intent)
             finish()
         }
