@@ -27,7 +27,7 @@ class EndGameActivity : AppCompatActivity() {
 
 
 
-        val restartButton = findViewById<Button>(R.id.restartButton)
+        val restartButton = findViewById<ImageView>(R.id.restartButton)
         restartButton.setOnClickListener {
             val intent = Intent(this, AvatarActivity::class.java)
             startActivity(intent)

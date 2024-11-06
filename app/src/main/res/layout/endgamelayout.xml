@@ -1,35 +1,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-  >
+    android:background="@drawable/endlayoutbackground"
 
+    >
 
-    <TextView
-        android:id="@+id/victoryMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="VICTORY"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp" />
 
     <ImageView
         android:id="@+id/avatarPlaceholder"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_below="@id/victoryMessage"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-      />
+        android:layout_width="276dp"
+        android:layout_height="242dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="162dp"
+        android:layout_marginTop="207dp"
+        android:layout_marginBottom="252dp" />
 
-    <Button
+    <ImageView
         android:id="@+id/restartButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Restart"
-        android:layout_below="@id/avatarPlaceholder"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_width="459dp"
+        android:layout_height="106dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="400dp"
+        android:layout_marginEnd="170dp"
+        android:layout_marginBottom="294dp"
+        android:src="@drawable/restartbutton" />
 
 </RelativeLayout>
