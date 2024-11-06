@@ -3,6 +3,7 @@ package com.example.estacionsandroid
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationSet
@@ -19,6 +20,7 @@ class AvatarActivity : AppCompatActivity() {
     private lateinit var confirmAvatarLayout: LinearLayout
     private lateinit var startButton: ImageView
     private lateinit var avatarCopy: ImageView
+    private lateinit var mediaPlayer: MediaPlayer
 
     private var avatarlist = mutableListOf(
         Avatar("batman"),
@@ -42,7 +44,11 @@ class AvatarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.avatarlayout)
+        mediaPlayer= MediaPlayer.create(this,R.raw.specialist)
+        mediaPlayer?.start()
+
         avatarCopy = findViewById(R.id.avatarCopy)
+
         window.decorView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
                         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
@@ -56,10 +62,18 @@ class AvatarActivity : AppCompatActivity() {
         confirmAvatarLayout = findViewById(R.id.confirmAvatarLayout)
         updateAdapter()
         setupAvatarClickListener()
+
     }
 
+    override fun onPause() {
+        super.onPause()
+        mediaPlayer.pause()
+    }
 
-
+    override fun onResume() {
+        super.onResume()
+        mediaPlayer.start()
+    }
     private fun updateAdapter(){
         lstAvatar = findViewById(R.id.AvatarView)
         adapter = AvatarAdapter(this,R.layout.avatarimage,avatarlist)
@@ -86,6 +100,7 @@ class AvatarActivity : AppCompatActivity() {
             val intent= Intent(this, IntroActivity::class.java)
             intent.putExtra("Avatar_Name", avatarName)
             startActivity(intent)
+            mediaPlayer.pause()
 
             finish()
         }
