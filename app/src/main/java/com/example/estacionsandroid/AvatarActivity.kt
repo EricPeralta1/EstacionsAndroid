@@ -44,7 +44,7 @@ class AvatarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.avatarlayout)
-        mediaPlayer= MediaPlayer.create(this,R.raw.specialist)
+        mediaPlayer= MediaPlayer.create(this,R.raw.menutheme)
         mediaPlayer?.start()
 
         avatarCopy = findViewById(R.id.avatarCopy)
