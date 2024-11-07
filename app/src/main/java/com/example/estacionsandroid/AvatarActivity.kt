@@ -73,7 +73,6 @@ class AvatarActivity : AppCompatActivity() {
             avatarCopy.setImageResource(avatarId)
             avatarCopy.visibility = ImageView.VISIBLE
             startButton.visibility = ImageView.VISIBLE
-            createButtonAnimation()
             createAvatarSelectedAnimation()
 
             val selectedAvatar= avatarlist[position]
@@ -112,15 +111,5 @@ class AvatarActivity : AppCompatActivity() {
         val animationSequence = AnimatorSet()
         animationSequence.playSequentially(fadeIn, leftAvatarSelected, centerAvatarSelected, rightAvatarSelected, endAvatarSelected)
         animationSequence.start()
-    }
-
-    private fun createButtonAnimation(){
-        val animationSequenceButton = AnimationSet(false)
-        val rotateButton = AnimationUtils.loadAnimation(this, R.anim.rotate_animation)
-        animationSequenceButton.addAnimation(rotateButton)
-
-
-        startButton.startAnimation(animationSequenceButton)
-
     }
 }

@@ -4,22 +4,22 @@
 
     <scale
         android:interpolator="@android:anim/linear_interpolator"
-        android:duration = "1000"
-        android:fromXScale = "50dp"
-        android:fromYScale = "50dp"
-        android:pivotX = "50%"
-        android:pivotY = "50%"
-        android:toXScale = "1"
-        android:toYScale = "1"/>
+        android:duration="750"
+        android:fromXScale="0.2"
+        android:fromYScale="0.2"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:toXScale="0.5"
+        android:toYScale="0.5" />
 
     <scale
         android:interpolator="@android:anim/linear_interpolator"
-        android:duration="1000"
-        android:fromXScale="75dp"
-        android:fromYScale="75dp"
+        android:duration="750"
+        android:fromXScale="0.5"
+        android:fromYScale="0.5"
         android:pivotX="50%"
         android:pivotY="50%"
-        android:toXScale="2"
-        android:toYScale="2"/>
+        android:toXScale="1.5"
+        android:toYScale="1.5" />
 
 </set>

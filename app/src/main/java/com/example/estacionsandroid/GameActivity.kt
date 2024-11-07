@@ -1,20 +1,16 @@
 package com.example.estacionsandroid
 
 import android.content.Intent
-import android.graphics.drawable.AnimationDrawable
-import android.media.Image
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationSet
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 import java.util.Random
 
 class GameActivity : AppCompatActivity() {
@@ -148,25 +144,53 @@ class GameActivity : AppCompatActivity() {
 
             2 -> {
                 GlobalScope.launch(Dispatchers.Main){
-                if (firstTime) {
+                    val itemView = findViewById<ImageView>(R.id.itemView)
+                    if (firstTime) {
 
-                        setCongratsImage()
-                        delay(50)
+                    itemView.visibility = View.INVISIBLE
 
+                    showcongratsAnimation()
+                        delay(7500)
+
+
+                    fadeoutcongratsAnimation()
                     tempList.addAll(figureList)
                 }
+
+                    val congratsView = findViewById<ImageView>(R.id.congratulationstext)
+                    val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
+                    val iconauxView2 = findViewById<ImageView>(R.id.iconauxbottom)
+                    congratsView.visibility = View.INVISIBLE
+                    iconauxView1.visibility = View.INVISIBLE
+                    iconauxView2.visibility = View.INVISIBLE
+                    itemView.visibility = View.VISIBLE
+
                 setImage(tempList)
                 }
             }
 
             3 -> {
                 GlobalScope.launch(Dispatchers.Main){
+                    val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
-                        setCongratsImage()
-                        delay(50)
 
+                        itemView.visibility = View.INVISIBLE
+                        showcongratsAnimation()
+                        delay(7500)
+
+                        fadeoutcongratsAnimation()
                         tempList.addAll(clothesList)
                     }
+
+                    val congratsView = findViewById<ImageView>(R.id.congratulationstext)
+                    val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
+                    val iconauxView2 = findViewById<ImageView>(R.id.iconauxbottom)
+                    congratsView.visibility = View.INVISIBLE
+                    iconauxView1.visibility = View.INVISIBLE
+                    iconauxView2.visibility = View.INVISIBLE
+                    itemView.visibility = View.VISIBLE
+
+
                     setImage(tempList)
                 }
             }
@@ -184,9 +208,44 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    private fun setCongratsImage() {
-        val imageView = findViewById<ImageView>(R.id.itemView)
-        imageView.setImageResource(R.drawable.congratulations)
+    private fun showcongratsAnimation() {
+        val congratsView = findViewById<ImageView>(R.id.congratulationstext)
+        val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
+        val iconauxView2 = findViewById<ImageView>(R.id.iconauxbottom)
+
+        val animationSequenceText = AnimationSet(false)
+        val fadeText = AnimationUtils.loadAnimation(this, R.anim.fade_animation)
+        val zoomText = AnimationUtils.loadAnimation(this, R.anim.zoom_animation)
+        animationSequenceText.addAnimation(fadeText)
+        animationSequenceText.addAnimation(zoomText)
+
+        val animationSequenceIcons = AnimationSet(false)
+        val fadeIcons = AnimationUtils.loadAnimation(this, R.anim.fade_animation)
+        val rotateIcons = AnimationUtils.loadAnimation(this, R.anim.rotate_animation)
+        animationSequenceIcons.addAnimation(fadeIcons)
+        animationSequenceIcons.addAnimation(rotateIcons)
+
+        congratsView.startAnimation(animationSequenceText)
+        congratsView.visibility = View.VISIBLE
+
+
+        iconauxView1.startAnimation(animationSequenceIcons)
+        iconauxView2.startAnimation(animationSequenceIcons)
+        iconauxView1.visibility = View.VISIBLE
+        iconauxView2.visibility = View.VISIBLE
+    }
+
+    private fun fadeoutcongratsAnimation(){
+        val congratsView = findViewById<ImageView>(R.id.congratulationstext)
+        val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
+        val iconauxView2 = findViewById<ImageView>(R.id.iconauxbottom)
+        val animationFadeOut = AnimationSet(false)
+        val fadeOut  = AnimationUtils.loadAnimation(this, R.anim.fadeout_animation)
+        animationFadeOut.addAnimation(fadeOut)
+
+        congratsView.startAnimation(animationFadeOut)
+        iconauxView1.startAnimation(animationFadeOut)
+        iconauxView2.startAnimation(animationFadeOut)
     }
 
 
