@@ -173,6 +173,12 @@ class GameActivity : AppCompatActivity() {
                 GlobalScope.launch(Dispatchers.Main){
                     val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
+                        val icon1 = findViewById<ImageView>(R.id.iconauxtop)
+                        val icon2 = findViewById<ImageView>(R.id.iconauxbottom)
+
+                        icon1.setBackgroundResource(R.drawable.snowflakeicon)
+                        icon2.setBackgroundResource(R.drawable.flowericon)
+
 
                         itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
