@@ -26,8 +26,9 @@
             android:layout_height="match_parent"
             android:background="@drawable/avatarboard"
             android:horizontalSpacing="5dp"
-            android:numColumns="5"
-            android:padding="30dp"
+            android:numColumns="4"
+            android:paddingTop="20dp"
+            android:paddingLeft="40dp"
             android:verticalSpacing="5dp" />
 
         <LinearLayout

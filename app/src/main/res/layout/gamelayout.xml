@@ -72,6 +72,7 @@
         android:layout_marginStart="404dp"
         android:layout_marginBottom="284dp"
         android:visibility="invisible"
+        android:clickable="false"
         android:background="@drawable/congratulationstext"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -83,6 +84,7 @@
         android:layout_marginStart="304dp"
         android:layout_marginBottom="432dp"
         android:background="@drawable/sunicon"
+        android:clickable="false"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -93,6 +95,7 @@
         android:layout_height="184dp"
         android:layout_marginStart="780dp"
         android:layout_marginBottom="200dp"
+        android:clickable="false"
         android:visibility="invisible"
         android:background="@drawable/leaficon"
         app:layout_constraintBottom_toBottomOf="parent"

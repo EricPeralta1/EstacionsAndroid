@@ -143,6 +143,7 @@ class GameActivity : AppCompatActivity() {
             }
 
             2 -> {
+
                 GlobalScope.launch(Dispatchers.Main){
                     val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
