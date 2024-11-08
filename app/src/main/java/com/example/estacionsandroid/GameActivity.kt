@@ -41,13 +41,14 @@ class GameActivity : AppCompatActivity() {
     )
 
     private var tempList = mutableListOf<Item>()
+    private val seasonList = mutableListOf<ImageView>()
     var level = 1
     var firstTime = true
     lateinit var item: Item
     var errors = 0
     var totalErrors = 0
     var hints = 0
-    var time = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,41 +76,28 @@ class GameActivity : AppCompatActivity() {
         springImage: ImageView
     ) {
         winterImage.setOnClickListener {
-            checkCorrect("Winter")
+            checkCorrect("Winter", winterImage)
         }
         autumnImage.setOnClickListener {
-            checkCorrect("Autumn")
+            checkCorrect("Autumn", autumnImage)
         }
         summerImage.setOnClickListener {
-            checkCorrect("Summer")
+            checkCorrect("Summer", summerImage)
         }
         springImage.setOnClickListener {
-            checkCorrect("Spring")
+            checkCorrect("Spring", springImage)
         }
     }
 
-    private fun checkCorrect(season: String) {
+    private fun checkCorrect(season: String, image: ImageView) {
         val condition = Pair(season, item.id)
 
         when (condition) {
-            Pair("Winter", 1) -> {
-                //show correct feedback
-                changeImage()
-            }
-
-            Pair("Summer", 2) -> {
-                //show correct feedback
-                changeImage()
-            }
-
-            Pair("Autumn", 3) -> {
-                //show correct feedback
-                changeImage()
-            }
-
-            Pair("Spring", 4) -> {
-                //show correct feedback
-                changeImage()
+            Pair("Winter", 1), Pair("Summer", 2), Pair("Autumn", 3), Pair("Spring", 4) -> {
+                // show correct feedback
+                seasonList.add(image)
+                image.visibility = View.INVISIBLE
+                changeImage(seasonList)
             }
 
             else -> {
@@ -126,7 +114,7 @@ class GameActivity : AppCompatActivity() {
     }
 
 
-    //Todo(All of the logic to show hints in missing)
+    //Todo(Show visual effects for hints)
     private fun showHint(second: Int) {
         when (second) {
             //Check "checkCorrect()" for season order
@@ -135,12 +123,17 @@ class GameActivity : AppCompatActivity() {
             3 -> {}
             4 -> {}
         }
-
-
     }
 
 
-    private fun changeImage() {
+    private fun changeImage(seasonList : MutableList<ImageView>) {
+        if (seasonList.size >= 4){
+            for (item in seasonList){
+                item.visibility= View.VISIBLE
+            }
+            seasonList.clear()
+        }
+
         when (level) {
             1 -> {
                 setImage(tempList)
@@ -182,6 +175,8 @@ class GameActivity : AppCompatActivity() {
 
             else -> println("wtf, just how did we get here")
         }
+
+
     }
 
     private fun setCongratsImage() {
