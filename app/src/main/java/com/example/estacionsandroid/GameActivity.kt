@@ -15,6 +15,8 @@ import java.util.Random
 
 class GameActivity : AppCompatActivity() {
 
+    private var clickable= true
+
     private var colorList = mutableListOf(
         Item("blanco", 1),
         Item("amarillo", 2),
@@ -72,16 +74,20 @@ class GameActivity : AppCompatActivity() {
         springImage: ImageView
     ) {
         winterImage.setOnClickListener {
-            checkCorrect("Winter", winterImage)
+            if (clickable){
+            checkCorrect("Winter", winterImage)}
         }
         autumnImage.setOnClickListener {
-            checkCorrect("Autumn", autumnImage)
+            if (clickable){
+            checkCorrect("Autumn", autumnImage)}
         }
         summerImage.setOnClickListener {
-            checkCorrect("Summer", summerImage)
+            if (clickable){
+            checkCorrect("Summer", summerImage)}
         }
         springImage.setOnClickListener {
-            checkCorrect("Spring", springImage)
+            if (clickable){
+            checkCorrect("Spring", springImage)}
         }
     }
 
@@ -143,9 +149,10 @@ class GameActivity : AppCompatActivity() {
 
                     itemView.visibility = View.INVISIBLE
 
+                        clickable=false
                     showcongratsAnimation()
                         delay(7500)
-
+                        clickable=true
 
                     fadeoutcongratsAnimation()
                     tempList.addAll(figureList)
@@ -173,10 +180,14 @@ class GameActivity : AppCompatActivity() {
                         icon1.setBackgroundResource(R.drawable.snowflakeicon)
                         icon2.setBackgroundResource(R.drawable.flowericon)
 
+                        clickable=false
 
                         itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
                         delay(7500)
+
+                        clickable=true
+
 
                         fadeoutcongratsAnimation()
                         tempList.addAll(clothesList)
