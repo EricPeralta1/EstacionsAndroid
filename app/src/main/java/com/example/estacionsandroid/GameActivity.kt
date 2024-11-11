@@ -1,6 +1,7 @@
 package com.example.estacionsandroid
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationSet
@@ -16,6 +17,12 @@ import java.util.Random
 class GameActivity : AppCompatActivity() {
 
     private var clickable= true
+    private lateinit var mediaPlayerBackgroundMusic: MediaPlayer
+    private lateinit var mediaPlayerPopUpMusic: MediaPlayer
+
+    private val mediaDuration = 7500L
+
+
 
     private var colorList = mutableListOf(
         Item("blanco", 1),
@@ -51,6 +58,14 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamelayout)
+        mediaPlayerBackgroundMusic= MediaPlayer.create(this,R.raw.maingame_parasail)
+        mediaPlayerBackgroundMusic.setVolume(40F, 40F)
+        mediaPlayerBackgroundMusic.start()
+        mediaPlayerBackgroundMusic.isLooping = true
+        mediaPlayerBackgroundMusic.setVolume(2f, 2f)
+
+        mediaPlayerPopUpMusic = MediaPlayer.create(this, R.raw.specialist) // Replace with actual popup music file
+        mediaPlayerPopUpMusic.setVolume(3f, 3f)
 
         window.decorView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
@@ -66,7 +81,15 @@ class GameActivity : AppCompatActivity() {
 
         onClickListeners(winterImage, autumnImage, summerImage, springImage)
     }
+    override fun onPause() {
+        super.onPause()
+        mediaPlayerBackgroundMusic.pause()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        mediaPlayerBackgroundMusic.start()
+    }
     private fun onClickListeners(
         winterImage: ImageView,
         autumnImage: ImageView,
@@ -148,10 +171,12 @@ class GameActivity : AppCompatActivity() {
                     if (firstTime) {
 
                     itemView.visibility = View.INVISIBLE
+                    clickable=false
 
-                        clickable=false
-                    showcongratsAnimation()
+                        showcongratsAnimation()
+                        mediaPlayerPopUpMusic.start()
                         delay(7500)
+                        mediaPlayerPopUpMusic.pause()
                         clickable=true
 
                     fadeoutcongratsAnimation()
@@ -211,6 +236,7 @@ class GameActivity : AppCompatActivity() {
                 val intent= Intent(this, EndGameActivity::class.java)
                 intent.putExtra("Avatar_Name", avatarName)
                 startActivity(intent)
+                mediaPlayerBackgroundMusic.pause()
                 finish()
 
             }

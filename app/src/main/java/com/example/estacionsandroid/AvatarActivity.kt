@@ -45,7 +45,10 @@ class AvatarActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.avatarlayout)
         mediaPlayer= MediaPlayer.create(this,R.raw.menutheme)
-        mediaPlayer?.start()
+        mediaPlayer.start()
+        mediaPlayer.isLooping = true
+        mediaPlayer.setVolume(1f, 1f)
+
 
         avatarCopy = findViewById(R.id.avatarCopy)
 
