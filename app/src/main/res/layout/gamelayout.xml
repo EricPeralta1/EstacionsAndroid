@@ -8,12 +8,13 @@
     android:scaleType="centerCrop"
     tools:context=".GameActivity">
 
+
     <ImageView
         android:id="@+id/itemView"
         android:layout_width="264dp"
         android:layout_height="264dp"
-        android:layout_marginStart="200dp"
-        android:layout_marginBottom="288dp"
+        android:layout_marginStart="204dp"
+        android:layout_marginBottom="284dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -63,5 +64,42 @@
             android:src="@drawable/autumn" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/congratulationstext"
+        android:layout_width="486dp"
+        android:layout_height="226dp"
+        android:layout_marginStart="404dp"
+        android:layout_marginBottom="284dp"
+        android:visibility="invisible"
+        android:clickable="false"
+        android:background="@drawable/congratulationstext"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/iconauxtop"
+        android:layout_width="224dp"
+        android:layout_height="196dp"
+        android:layout_marginStart="304dp"
+        android:layout_marginBottom="432dp"
+        android:background="@drawable/sunicon"
+        android:clickable="false"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/iconauxbottom"
+        android:layout_width="186dp"
+        android:layout_height="184dp"
+        android:layout_marginStart="780dp"
+        android:layout_marginBottom="200dp"
+        android:clickable="false"
+        android:visibility="invisible"
+        android:background="@drawable/leaficon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

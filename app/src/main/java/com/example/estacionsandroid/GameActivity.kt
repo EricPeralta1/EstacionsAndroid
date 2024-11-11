@@ -1,23 +1,21 @@
 package com.example.estacionsandroid
 
 import android.content.Intent
-import android.graphics.drawable.AnimationDrawable
-import android.media.Image
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationSet
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 import java.util.Random
 
 class GameActivity : AppCompatActivity() {
+
+    private var clickable= true
 
     private var colorList = mutableListOf(
         Item("blanco", 1),
@@ -41,13 +39,14 @@ class GameActivity : AppCompatActivity() {
     )
 
     private var tempList = mutableListOf<Item>()
+    private val seasonList = mutableListOf<ImageView>()
     var level = 1
     var firstTime = true
     lateinit var item: Item
     var errors = 0
     var totalErrors = 0
     var hints = 0
-    var time = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,41 +74,32 @@ class GameActivity : AppCompatActivity() {
         springImage: ImageView
     ) {
         winterImage.setOnClickListener {
-            checkCorrect("Winter")
+            if (clickable){
+            checkCorrect("Winter", winterImage)}
         }
         autumnImage.setOnClickListener {
-            checkCorrect("Autumn")
+            if (clickable){
+            checkCorrect("Autumn", autumnImage)}
         }
         summerImage.setOnClickListener {
-            checkCorrect("Summer")
+            if (clickable){
+            checkCorrect("Summer", summerImage)}
         }
         springImage.setOnClickListener {
-            checkCorrect("Spring")
+            if (clickable){
+            checkCorrect("Spring", springImage)}
         }
     }
 
-    private fun checkCorrect(season: String) {
+    private fun checkCorrect(season: String, image: ImageView) {
         val condition = Pair(season, item.id)
 
         when (condition) {
-            Pair("Winter", 1) -> {
-                //show correct feedback
-                changeImage()
-            }
-
-            Pair("Summer", 2) -> {
-                //show correct feedback
-                changeImage()
-            }
-
-            Pair("Autumn", 3) -> {
-                //show correct feedback
-                changeImage()
-            }
-
-            Pair("Spring", 4) -> {
-                //show correct feedback
-                changeImage()
+            Pair("Winter", 1), Pair("Summer", 2), Pair("Autumn", 3), Pair("Spring", 4) -> {
+                // show correct feedback
+                seasonList.add(image)
+                image.visibility = View.INVISIBLE
+                changeImage(seasonList)
             }
 
             else -> {
@@ -126,7 +116,7 @@ class GameActivity : AppCompatActivity() {
     }
 
 
-    //Todo(All of the logic to show hints in missing)
+    //Todo(Show visual effects for hints)
     private fun showHint(second: Int) {
         when (second) {
             //Check "checkCorrect()" for season order
@@ -135,38 +125,83 @@ class GameActivity : AppCompatActivity() {
             3 -> {}
             4 -> {}
         }
-
-
     }
 
 
-    private fun changeImage() {
+    private fun changeImage(seasonList : MutableList<ImageView>) {
+        if (seasonList.size >= 4){
+            for (item in seasonList){
+                item.visibility= View.VISIBLE
+            }
+            seasonList.clear()
+        }
+
         when (level) {
             1 -> {
                 setImage(tempList)
             }
 
             2 -> {
+
                 GlobalScope.launch(Dispatchers.Main){
-                if (firstTime) {
+                    val itemView = findViewById<ImageView>(R.id.itemView)
+                    if (firstTime) {
 
-                        setCongratsImage()
-                        delay(50)
+                    itemView.visibility = View.INVISIBLE
 
+                        clickable=false
+                    showcongratsAnimation()
+                        delay(7500)
+                        clickable=true
+
+                    fadeoutcongratsAnimation()
                     tempList.addAll(figureList)
                 }
+
+                    val congratsView = findViewById<ImageView>(R.id.congratulationstext)
+                    val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
+                    val iconauxView2 = findViewById<ImageView>(R.id.iconauxbottom)
+                    congratsView.visibility = View.INVISIBLE
+                    iconauxView1.visibility = View.INVISIBLE
+                    iconauxView2.visibility = View.INVISIBLE
+                    itemView.visibility = View.VISIBLE
+
                 setImage(tempList)
                 }
             }
 
             3 -> {
                 GlobalScope.launch(Dispatchers.Main){
+                    val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
-                        setCongratsImage()
-                        delay(50)
+                        val icon1 = findViewById<ImageView>(R.id.iconauxtop)
+                        val icon2 = findViewById<ImageView>(R.id.iconauxbottom)
 
+                        icon1.setBackgroundResource(R.drawable.snowflakeicon)
+                        icon2.setBackgroundResource(R.drawable.flowericon)
+
+                        clickable=false
+
+                        itemView.visibility = View.INVISIBLE
+                        showcongratsAnimation()
+                        delay(7500)
+
+                        clickable=true
+
+
+                        fadeoutcongratsAnimation()
                         tempList.addAll(clothesList)
                     }
+
+                    val congratsView = findViewById<ImageView>(R.id.congratulationstext)
+                    val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
+                    val iconauxView2 = findViewById<ImageView>(R.id.iconauxbottom)
+                    congratsView.visibility = View.INVISIBLE
+                    iconauxView1.visibility = View.INVISIBLE
+                    iconauxView2.visibility = View.INVISIBLE
+                    itemView.visibility = View.VISIBLE
+
+
                     setImage(tempList)
                 }
             }
@@ -182,11 +217,48 @@ class GameActivity : AppCompatActivity() {
 
             else -> println("wtf, just how did we get here")
         }
+
+
     }
 
-    private fun setCongratsImage() {
-        val imageView = findViewById<ImageView>(R.id.itemView)
-        imageView.setImageResource(R.drawable.congratulations)
+    private fun showcongratsAnimation() {
+        val congratsView = findViewById<ImageView>(R.id.congratulationstext)
+        val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
+        val iconauxView2 = findViewById<ImageView>(R.id.iconauxbottom)
+
+        val animationSequenceText = AnimationSet(false)
+        val fadeText = AnimationUtils.loadAnimation(this, R.anim.fade_animation)
+        val zoomText = AnimationUtils.loadAnimation(this, R.anim.zoom_animation)
+        animationSequenceText.addAnimation(fadeText)
+        animationSequenceText.addAnimation(zoomText)
+
+        val animationSequenceIcons = AnimationSet(false)
+        val fadeIcons = AnimationUtils.loadAnimation(this, R.anim.fade_animation)
+        val rotateIcons = AnimationUtils.loadAnimation(this, R.anim.rotate_animation)
+        animationSequenceIcons.addAnimation(fadeIcons)
+        animationSequenceIcons.addAnimation(rotateIcons)
+
+        congratsView.startAnimation(animationSequenceText)
+        congratsView.visibility = View.VISIBLE
+
+
+        iconauxView1.startAnimation(animationSequenceIcons)
+        iconauxView2.startAnimation(animationSequenceIcons)
+        iconauxView1.visibility = View.VISIBLE
+        iconauxView2.visibility = View.VISIBLE
+    }
+
+    private fun fadeoutcongratsAnimation(){
+        val congratsView = findViewById<ImageView>(R.id.congratulationstext)
+        val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
+        val iconauxView2 = findViewById<ImageView>(R.id.iconauxbottom)
+        val animationFadeOut = AnimationSet(false)
+        val fadeOut  = AnimationUtils.loadAnimation(this, R.anim.fadeout_animation)
+        animationFadeOut.addAnimation(fadeOut)
+
+        congratsView.startAnimation(animationFadeOut)
+        iconauxView1.startAnimation(animationFadeOut)
+        iconauxView2.startAnimation(animationFadeOut)
     }
 
 
