@@ -93,12 +93,22 @@ class GameActivity : AppCompatActivity() {
 
     private fun checkCorrect(season: String, image: ImageView) {
         val condition = Pair(season, item.id)
+        val clueWinterImage: ImageView = findViewById(R.id.clueWinter)
+        val clueSummerImage: ImageView = findViewById(R.id.clueSummer)
+        val clueAutumnImage: ImageView = findViewById(R.id.clueAutumn)
+        val clueSpringImage: ImageView = findViewById(R.id.clueSpring)
 
         when (condition) {
             Pair("Winter", 1), Pair("Summer", 2), Pair("Autumn", 3), Pair("Spring", 4) -> {
-                // show correct feedback
                 seasonList.add(image)
+                errors = 0
                 image.visibility = View.INVISIBLE
+
+                clueWinterImage.clearAnimation()
+                clueSummerImage.clearAnimation()
+                clueAutumnImage.clearAnimation()
+                clueSpringImage.clearAnimation()
+
                 changeImage(seasonList)
             }
 
@@ -116,14 +126,27 @@ class GameActivity : AppCompatActivity() {
     }
 
 
-    //Todo(Show visual effects for hints)
     private fun showHint(second: Int) {
+        val clueWinterImage: ImageView = findViewById(R.id.clueWinter)
+        val clueSummerImage: ImageView = findViewById(R.id.clueSummer)
+        val clueAutumnImage: ImageView = findViewById(R.id.clueAutumn)
+        val clueSpringImage: ImageView = findViewById(R.id.clueSpring)
+
+        val clueAnimation = AnimationUtils.loadAnimation(this, R.anim.pulse_animation)
+
         when (second) {
-            //Check "checkCorrect()" for season order
-            1 -> {}
-            2 -> {}
-            3 -> {}
-            4 -> {}
+            1 -> {
+                clueWinterImage.startAnimation(clueAnimation)
+            }
+            2 -> {
+                clueSummerImage.startAnimation(clueAnimation)
+            }
+            3 -> {
+                clueAutumnImage.startAnimation(clueAnimation)
+            }
+            4 -> {
+                clueSpringImage.startAnimation(clueAnimation)
+            }
         }
     }
 
@@ -148,10 +171,9 @@ class GameActivity : AppCompatActivity() {
                     if (firstTime) {
 
                     itemView.visibility = View.INVISIBLE
-
+                        showcongratsAnimation()
                         clickable=false
-                    showcongratsAnimation()
-                        delay(7500)
+                        delay(4250)
                         clickable=true
 
                     fadeoutcongratsAnimation()
@@ -184,7 +206,7 @@ class GameActivity : AppCompatActivity() {
 
                         itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
-                        delay(7500)
+                        delay(4250)
 
                         clickable=true
 
@@ -229,6 +251,7 @@ class GameActivity : AppCompatActivity() {
         val animationSequenceText = AnimationSet(false)
         val fadeText = AnimationUtils.loadAnimation(this, R.anim.fade_animation)
         val zoomText = AnimationUtils.loadAnimation(this, R.anim.zoom_animation)
+        animationSequenceText.duration = 500
         animationSequenceText.addAnimation(fadeText)
         animationSequenceText.addAnimation(zoomText)
 
@@ -255,6 +278,7 @@ class GameActivity : AppCompatActivity() {
         val animationFadeOut = AnimationSet(false)
         val fadeOut  = AnimationUtils.loadAnimation(this, R.anim.fadeout_animation)
         animationFadeOut.addAnimation(fadeOut)
+        animationFadeOut.duration = 1000
 
         congratsView.startAnimation(animationFadeOut)
         iconauxView1.startAnimation(animationFadeOut)
