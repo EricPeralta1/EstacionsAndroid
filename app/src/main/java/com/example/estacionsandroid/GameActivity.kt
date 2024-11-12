@@ -21,7 +21,7 @@ class GameActivity : AppCompatActivity() {
         Item("blanco", 1),
         Item("amarillo", 2),
         Item("naranja", 3),
-        Item("verde", 4)
+        Item("rosa", 4)
     )
 
     private var figureList = mutableListOf(
