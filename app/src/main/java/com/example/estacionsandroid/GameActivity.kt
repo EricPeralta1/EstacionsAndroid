@@ -20,7 +20,6 @@ class GameActivity : AppCompatActivity() {
     private lateinit var mediaPlayerBackgroundMusic: MediaPlayer
     private lateinit var mediaPlayerPopUpMusic: MediaPlayer
 
-    private val mediaDuration = 7500L
 
 
 
@@ -84,6 +83,7 @@ class GameActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         mediaPlayerBackgroundMusic.pause()
+        mediaPlayerPopUpMusic.pause()
     }
 
     override fun onResume() {
@@ -165,14 +165,14 @@ class GameActivity : AppCompatActivity() {
             }
 
             2 -> {
-
+                mediaPlayerBackgroundMusic.pause()
                 GlobalScope.launch(Dispatchers.Main){
                     val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
 
-                    itemView.visibility = View.INVISIBLE
-                    clickable=false
+                     clickable=false
 
+                    itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
                         mediaPlayerPopUpMusic.start()
                         delay(7500)
@@ -182,7 +182,7 @@ class GameActivity : AppCompatActivity() {
                     fadeoutcongratsAnimation()
                     tempList.addAll(figureList)
                 }
-
+                    mediaPlayerBackgroundMusic.start()
                     val congratsView = findViewById<ImageView>(R.id.congratulationstext)
                     val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
                     val iconauxView2 = findViewById<ImageView>(R.id.iconauxbottom)
@@ -196,6 +196,7 @@ class GameActivity : AppCompatActivity() {
             }
 
             3 -> {
+                mediaPlayerBackgroundMusic.pause()
                 GlobalScope.launch(Dispatchers.Main){
                     val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
@@ -209,14 +210,16 @@ class GameActivity : AppCompatActivity() {
 
                         itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
+                        mediaPlayerPopUpMusic.start()
                         delay(7500)
+                        mediaPlayerPopUpMusic.pause()
 
                         clickable=true
-
 
                         fadeoutcongratsAnimation()
                         tempList.addAll(clothesList)
                     }
+                    mediaPlayerBackgroundMusic.start()
 
                     val congratsView = findViewById<ImageView>(R.id.congratulationstext)
                     val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)

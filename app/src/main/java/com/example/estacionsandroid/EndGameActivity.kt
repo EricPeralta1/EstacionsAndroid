@@ -1,6 +1,7 @@
 package com.example.estacionsandroid
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -8,9 +9,15 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
 class EndGameActivity : AppCompatActivity() {
+    private lateinit var mediaPlayer: MediaPlayer
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.endgamelayout)
+        mediaPlayer= MediaPlayer.create(this,R.raw.winscreentheme_dkultimatewin)
+        mediaPlayer.setVolume(40F, 40F)
+        mediaPlayer.start()
+
         window.decorView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
                         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
@@ -33,5 +40,16 @@ class EndGameActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+    override fun onPause() {
+        super.onPause()
+        mediaPlayer.pause()
+        mediaPlayer.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mediaPlayer.start()
+        mediaPlayer.pause()
     }
 }
