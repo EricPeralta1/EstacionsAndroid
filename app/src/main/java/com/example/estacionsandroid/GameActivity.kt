@@ -1,6 +1,7 @@
 package com.example.estacionsandroid
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationSet
@@ -16,12 +17,17 @@ import java.util.Random
 class GameActivity : AppCompatActivity() {
 
     private var clickable= true
+    private lateinit var mediaPlayerBackgroundMusic: MediaPlayer
+    private lateinit var mediaPlayerPopUpMusic: MediaPlayer
+
+
+
 
     private var colorList = mutableListOf(
         Item("blanco", 1),
         Item("amarillo", 2),
         Item("naranja", 3),
-        Item("rosa", 4)
+        Item("verde", 4)
     )
 
     private var figureList = mutableListOf(
@@ -51,6 +57,14 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamelayout)
+        mediaPlayerBackgroundMusic= MediaPlayer.create(this,R.raw.maingame_parasail)
+        mediaPlayerBackgroundMusic.setVolume(40F, 40F)
+        mediaPlayerBackgroundMusic.start()
+        mediaPlayerBackgroundMusic.isLooping = true
+        mediaPlayerBackgroundMusic.setVolume(2f, 2f)
+
+        mediaPlayerPopUpMusic = MediaPlayer.create(this, R.raw.specialist) // Replace with actual popup music file
+        mediaPlayerPopUpMusic.setVolume(3f, 3f)
 
         window.decorView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
@@ -66,7 +80,16 @@ class GameActivity : AppCompatActivity() {
 
         onClickListeners(winterImage, autumnImage, summerImage, springImage)
     }
+    override fun onPause() {
+        super.onPause()
+        mediaPlayerBackgroundMusic.pause()
+        mediaPlayerPopUpMusic.pause()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        mediaPlayerBackgroundMusic.start()
+    }
     private fun onClickListeners(
         winterImage: ImageView,
         autumnImage: ImageView,
@@ -93,22 +116,12 @@ class GameActivity : AppCompatActivity() {
 
     private fun checkCorrect(season: String, image: ImageView) {
         val condition = Pair(season, item.id)
-        val clueWinterImage: ImageView = findViewById(R.id.clueWinter)
-        val clueSummerImage: ImageView = findViewById(R.id.clueSummer)
-        val clueAutumnImage: ImageView = findViewById(R.id.clueAutumn)
-        val clueSpringImage: ImageView = findViewById(R.id.clueSpring)
 
         when (condition) {
             Pair("Winter", 1), Pair("Summer", 2), Pair("Autumn", 3), Pair("Spring", 4) -> {
+                // show correct feedback
                 seasonList.add(image)
-                errors = 0
                 image.visibility = View.INVISIBLE
-
-                clueWinterImage.clearAnimation()
-                clueSummerImage.clearAnimation()
-                clueAutumnImage.clearAnimation()
-                clueSpringImage.clearAnimation()
-
                 changeImage(seasonList)
             }
 
@@ -165,21 +178,24 @@ class GameActivity : AppCompatActivity() {
             }
 
             2 -> {
-
+                mediaPlayerBackgroundMusic.pause()
                 GlobalScope.launch(Dispatchers.Main){
                     val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
 
+                     clickable=false
+
                     itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
-                        clickable=false
-                        delay(4250)
+                        mediaPlayerPopUpMusic.start()
+                        delay(7500)
+                        mediaPlayerPopUpMusic.pause()
                         clickable=true
 
                     fadeoutcongratsAnimation()
                     tempList.addAll(figureList)
                 }
-
+                    mediaPlayerBackgroundMusic.start()
                     val congratsView = findViewById<ImageView>(R.id.congratulationstext)
                     val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
                     val iconauxView2 = findViewById<ImageView>(R.id.iconauxbottom)
@@ -193,6 +209,7 @@ class GameActivity : AppCompatActivity() {
             }
 
             3 -> {
+                mediaPlayerBackgroundMusic.pause()
                 GlobalScope.launch(Dispatchers.Main){
                     val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
@@ -206,14 +223,16 @@ class GameActivity : AppCompatActivity() {
 
                         itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
-                        delay(4250)
+                        mediaPlayerPopUpMusic.start()
+                        delay(7500)
+                        mediaPlayerPopUpMusic.pause()
 
                         clickable=true
-
 
                         fadeoutcongratsAnimation()
                         tempList.addAll(clothesList)
                     }
+                    mediaPlayerBackgroundMusic.start()
 
                     val congratsView = findViewById<ImageView>(R.id.congratulationstext)
                     val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
@@ -233,6 +252,7 @@ class GameActivity : AppCompatActivity() {
                 val intent= Intent(this, EndGameActivity::class.java)
                 intent.putExtra("Avatar_Name", avatarName)
                 startActivity(intent)
+                mediaPlayerBackgroundMusic.pause()
                 finish()
 
             }
@@ -251,7 +271,6 @@ class GameActivity : AppCompatActivity() {
         val animationSequenceText = AnimationSet(false)
         val fadeText = AnimationUtils.loadAnimation(this, R.anim.fade_animation)
         val zoomText = AnimationUtils.loadAnimation(this, R.anim.zoom_animation)
-        animationSequenceText.duration = 500
         animationSequenceText.addAnimation(fadeText)
         animationSequenceText.addAnimation(zoomText)
 
@@ -278,7 +297,6 @@ class GameActivity : AppCompatActivity() {
         val animationFadeOut = AnimationSet(false)
         val fadeOut  = AnimationUtils.loadAnimation(this, R.anim.fadeout_animation)
         animationFadeOut.addAnimation(fadeOut)
-        animationFadeOut.duration = 1000
 
         congratsView.startAnimation(animationFadeOut)
         iconauxView1.startAnimation(animationFadeOut)
