@@ -44,12 +44,10 @@ class EndGameActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         mediaPlayer.pause()
-        mediaPlayer.pause()
     }
 
     override fun onResume() {
         super.onResume()
         mediaPlayer.start()
-        mediaPlayer.pause()
     }
 }
