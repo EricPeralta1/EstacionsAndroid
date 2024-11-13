@@ -11,12 +11,76 @@
 
     <ImageView
         android:id="@+id/itemView"
-        android:layout_width="264dp"
-        android:layout_height="264dp"
+        android:layout_width="265dp"
+        android:layout_height="265dp"
         android:layout_marginStart="204dp"
         android:layout_marginBottom="284dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/clueWinter"
+        android:layout_width="325dp"
+        android:layout_height="170dp"
+        android:layout_weight="1"
+        android:scaleType="fitXY"
+        android:src="@drawable/clueborder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.830"
+        app:layout_constraintVertical_bias="0.085"
+        android:visibility="invisible"
+        />
+
+    <ImageView
+        android:id="@+id/clueSpring"
+        android:layout_width="325dp"
+        android:layout_height="170dp"
+        android:layout_weight="1"
+        android:scaleType="fitXY"
+        android:src="@drawable/clueborder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.830"
+        app:layout_constraintVertical_bias="0.360"
+        android:visibility="invisible"
+        />
+
+    <ImageView
+        android:id="@+id/clueSummer"
+        android:layout_width="325dp"
+        android:layout_height="170dp"
+        android:layout_weight="1"
+        android:scaleType="fitXY"
+        android:src="@drawable/clueborder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.830"
+        app:layout_constraintVertical_bias="0.635"
+        android:visibility="invisible"
+        />
+
+    <ImageView
+        android:id="@+id/clueAutumn"
+        android:layout_width="325dp"
+        android:layout_height="170dp"
+        android:layout_weight="1"
+        android:scaleType="fitXY"
+        android:src="@drawable/clueborder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.830"
+        app:layout_constraintVertical_bias="0.915"
+        android:visibility="invisible"
+        />
 
     <LinearLayout
         android:id="@+id/seasonsLayout"
@@ -35,7 +99,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:scaleType="fitXY"
-            android:src="@drawable/winter" />
+            android:src="@drawable/winter"
+            />
 
         <ImageView
             android:id="@+id/imageSpring"
