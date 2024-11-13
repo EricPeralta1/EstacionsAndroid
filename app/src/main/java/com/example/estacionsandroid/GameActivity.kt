@@ -27,7 +27,7 @@ class GameActivity : AppCompatActivity() {
         Item("blanco", 1),
         Item("amarillo", 2),
         Item("naranja", 3),
-        Item("verde", 4)
+        Item("rosa", 4)
     )
 
     private var figureList = mutableListOf(
@@ -116,13 +116,22 @@ class GameActivity : AppCompatActivity() {
 
     private fun checkCorrect(season: String, image: ImageView) {
         val condition = Pair(season, item.id)
+        val clueWinterImage: ImageView = findViewById(R.id.clueWinter)
+        val clueSummerImage: ImageView = findViewById(R.id.clueSummer)
+        val clueAutumnImage: ImageView = findViewById(R.id.clueAutumn)
+        val clueSpringImage: ImageView = findViewById(R.id.clueSpring)
 
         when (condition) {
             Pair("Winter", 1), Pair("Summer", 2), Pair("Autumn", 3), Pair("Spring", 4) -> {
-                // show correct feedback
                 seasonList.add(image)
                 image.visibility = View.INVISIBLE
                 changeImage(seasonList)
+                errors = 0
+
+                clueWinterImage.clearAnimation()
+                clueSummerImage.clearAnimation()
+                clueAutumnImage.clearAnimation()
+                clueSpringImage.clearAnimation()
             }
 
             else -> {
@@ -188,7 +197,7 @@ class GameActivity : AppCompatActivity() {
                     itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
                         mediaPlayerPopUpMusic.start()
-                        delay(7500)
+                        delay(4250)
                         mediaPlayerPopUpMusic.pause()
                         clickable=true
 
@@ -224,7 +233,7 @@ class GameActivity : AppCompatActivity() {
                         itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
                         mediaPlayerPopUpMusic.start()
-                        delay(7500)
+                        delay(4250)
                         mediaPlayerPopUpMusic.pause()
 
                         clickable=true
@@ -273,6 +282,7 @@ class GameActivity : AppCompatActivity() {
         val zoomText = AnimationUtils.loadAnimation(this, R.anim.zoom_animation)
         animationSequenceText.addAnimation(fadeText)
         animationSequenceText.addAnimation(zoomText)
+        animationSequenceText.duration = 500
 
         val animationSequenceIcons = AnimationSet(false)
         val fadeIcons = AnimationUtils.loadAnimation(this, R.anim.fade_animation)
@@ -297,6 +307,7 @@ class GameActivity : AppCompatActivity() {
         val animationFadeOut = AnimationSet(false)
         val fadeOut  = AnimationUtils.loadAnimation(this, R.anim.fadeout_animation)
         animationFadeOut.addAnimation(fadeOut)
+        animationFadeOut.duration= 1000
 
         congratsView.startAnimation(animationFadeOut)
         iconauxView1.startAnimation(animationFadeOut)
