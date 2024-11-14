@@ -1,21 +1,22 @@
 package com.example.estacionsandroid
 
 class Player (
-    val name: String,
+    var name: String,
 
-    val errors1: Int,
-    val usedHints1: Int,
-    val time1: Int,
+    var errors1: Int,
+    var usedHints1: Int,
+    var time1: Int,
 
-    val errors2: Int,
-    val usedHints2: Int,
-    val time2: Int,
+    var errors2: Int,
+    var usedHints2: Int,
+    var time2: Int,
 
-    val errors3: Int,
-    val usedHints3: Int,
-    val time3: Int,
+    var errors3: Int,
+    var usedHints3: Int,
+    var time3: Int,
 
-    val date: String
+    var date: String
 ){
 
+    constructor(name: String) : this(name, 0, 0, 0, 0, 0, 0, 0, 0, 0, "")
 }

@@ -3,6 +3,8 @@ package com.example.estacionsandroid
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
@@ -12,14 +14,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Random
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 class GameActivity : AppCompatActivity() {
 
     private var clickable= true
     private lateinit var mediaPlayerBackgroundMusic: MediaPlayer
     private lateinit var mediaPlayerPopUpMusic: MediaPlayer
-
 
 
 
@@ -46,12 +51,15 @@ class GameActivity : AppCompatActivity() {
 
     private var tempList = mutableListOf<Item>()
     private val seasonList = mutableListOf<ImageView>()
+    lateinit var player: Player
     var level = 1
     var firstTime = true
     lateinit var item: Item
     var errors = 0
     var totalErrors = 0
     var hints = 0
+
+    private var startTime: Long = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +87,23 @@ class GameActivity : AppCompatActivity() {
         val springImage: ImageView = findViewById(R.id.imageSpring)
 
         onClickListeners(winterImage, autumnImage, summerImage, springImage)
+        val playerName: String
+        if (intent.getStringExtra("Avatar_Name")!= null){
+         playerName= intent.getStringExtra("Avatar_Name").toString()
+        } else  {
+            playerName= "batman"
+        }
+
+        player = Player(playerName)
+        player.date= SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().time)
+        startTime = System.currentTimeMillis()
     }
+
+    private fun getElapsedSeconds(): Int {
+        val currentTime = System.currentTimeMillis()
+        return ((currentTime - startTime) / 1000).toInt()
+    }
+
     override fun onPause() {
         super.onPause()
         mediaPlayerBackgroundMusic.pause()
@@ -187,6 +211,10 @@ class GameActivity : AppCompatActivity() {
             }
 
             2 -> {
+                player.errors1= totalErrors
+                player.usedHints1= hints
+                player.time1= getElapsedSeconds()
+                startTime = System.currentTimeMillis()
                 mediaPlayerBackgroundMusic.pause()
                 GlobalScope.launch(Dispatchers.Main){
                     val itemView = findViewById<ImageView>(R.id.itemView)
@@ -218,6 +246,10 @@ class GameActivity : AppCompatActivity() {
             }
 
             3 -> {
+                player.errors2= totalErrors
+                player.usedHints2= hints
+                player.time2= getElapsedSeconds()
+                startTime = System.currentTimeMillis()
                 mediaPlayerBackgroundMusic.pause()
                 GlobalScope.launch(Dispatchers.Main){
                     val itemView = findViewById<ImageView>(R.id.itemView)
@@ -257,6 +289,10 @@ class GameActivity : AppCompatActivity() {
             }
 
             4 -> {
+                player.errors2= totalErrors
+                player.usedHints2= hints
+                player.time2= getElapsedSeconds()
+                startTime = System.currentTimeMillis()
                 val avatarName = intent.getStringExtra("Avatar_Name")
                 val intent= Intent(this, EndGameActivity::class.java)
                 intent.putExtra("Avatar_Name", avatarName)
