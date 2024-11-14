@@ -4,6 +4,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.media.MediaPlayer
+import android.media.SoundPool
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationSet
@@ -21,6 +22,10 @@ class AvatarActivity : AppCompatActivity() {
     private lateinit var startButton: ImageView
     private lateinit var avatarCopy: ImageView
     private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var soundPool: SoundPool
+    private var soundId: Int = 0
+
+
 
     private var avatarlist = mutableListOf(
         Avatar("batman"),
@@ -62,6 +67,14 @@ class AvatarActivity : AppCompatActivity() {
         startButton = findViewById(R.id.startButton)
         startButton.visibility = ImageView.INVISIBLE
 
+
+
+        soundPool = SoundPool.Builder()
+            .setMaxStreams(1)
+            .build()
+
+        soundId = soundPool.load(this, R.raw.tapeffect, 1)
+
         confirmAvatarLayout = findViewById(R.id.confirmAvatarLayout)
         updateAdapter()
         setupAvatarClickListener()
@@ -86,11 +99,14 @@ class AvatarActivity : AppCompatActivity() {
 
     private fun setupAvatarClickListener() {
         lstAvatar.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+
+            soundPool.play(soundId, 1f, 1f, 0, 0, 1f)
             val avatarId = resources.getIdentifier(avatarlist[position].name, "drawable", packageName)
             avatarCopy.setImageResource(avatarId)
             avatarCopy.visibility = ImageView.VISIBLE
             startButton.visibility = ImageView.VISIBLE
             createAvatarSelectedAnimation()
+
 
             val selectedAvatar= avatarlist[position]
 

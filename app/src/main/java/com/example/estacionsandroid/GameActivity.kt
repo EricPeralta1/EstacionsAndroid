@@ -2,6 +2,7 @@ package com.example.estacionsandroid
 
 import android.content.Intent
 import android.media.MediaPlayer
+import android.media.SoundPool
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -25,6 +26,10 @@ class GameActivity : AppCompatActivity() {
     private var clickable= true
     private lateinit var mediaPlayerBackgroundMusic: MediaPlayer
     private lateinit var mediaPlayerPopUpMusic: MediaPlayer
+    private lateinit var soundPool: SoundPool
+    private var soundIdTap: Int = 0
+    private var soundIdCorrect: Int = 0
+
 
 
 
@@ -79,6 +84,7 @@ class GameActivity : AppCompatActivity() {
                         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
                         View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 )
+
         tempList.addAll(colorList)
         setImage(tempList)
         val winterImage: ImageView = findViewById(R.id.imageWinter)
@@ -86,7 +92,15 @@ class GameActivity : AppCompatActivity() {
         val summerImage: ImageView = findViewById(R.id.imageSummer)
         val springImage: ImageView = findViewById(R.id.imageSpring)
 
+        soundPool = SoundPool.Builder()
+            .setMaxStreams(2)
+            .build()
+
+        soundIdTap = soundPool.load(this, R.raw.tapeffect, 1)
+        soundIdCorrect = soundPool.load(this, R.raw.correctefect, 1)
+
         onClickListeners(winterImage, autumnImage, summerImage, springImage)
+
         val playerName: String
         if (intent.getStringExtra("Avatar_Name")!= null){
          playerName= intent.getStringExtra("Avatar_Name").toString()
@@ -122,19 +136,23 @@ class GameActivity : AppCompatActivity() {
     ) {
         winterImage.setOnClickListener {
             if (clickable){
-            checkCorrect("Winter", winterImage)}
+                soundPool.play(soundIdTap, 1f, 1f, 0, 0, 1f)
+                checkCorrect("Winter", winterImage)}
         }
         autumnImage.setOnClickListener {
             if (clickable){
-            checkCorrect("Autumn", autumnImage)}
+                soundPool.play(soundIdTap, 1f, 1f, 0, 0, 1f)
+                checkCorrect("Autumn", autumnImage)}
         }
         summerImage.setOnClickListener {
             if (clickable){
-            checkCorrect("Summer", summerImage)}
+                soundPool.play(soundIdTap, 1f, 1f, 0, 0, 1f)
+                checkCorrect("Summer", summerImage)}
         }
         springImage.setOnClickListener {
             if (clickable){
-            checkCorrect("Spring", springImage)}
+                soundPool.play(soundIdTap, 1f, 1f, 0, 0, 1f)
+                checkCorrect("Spring", springImage)}
         }
     }
 
@@ -151,6 +169,7 @@ class GameActivity : AppCompatActivity() {
                 image.visibility = View.INVISIBLE
                 changeImage(seasonList)
                 errors = 0
+                soundPool.play(soundIdCorrect, 1f, 1f, 0, 0, 1f)
 
                 clueWinterImage.clearAnimation()
                 clueSummerImage.clearAnimation()

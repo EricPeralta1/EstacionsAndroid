@@ -32,5 +32,6 @@ class IntroActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
     }
 }
