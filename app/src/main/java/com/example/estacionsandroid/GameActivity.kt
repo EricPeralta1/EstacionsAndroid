@@ -24,6 +24,8 @@ import java.io.File
 import java.io.FileOutputStream
 import android.os.Environment
 import com.google.gson.JsonArray
+import com.google.gson.reflect.TypeToken
+import java.io.FileReader
 
 
 class GameActivity : AppCompatActivity() {
@@ -55,8 +57,6 @@ class GameActivity : AppCompatActivity() {
         Item("raincoat", 3)
     )
     val fileName = "Estacions.json"
-    val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName)
-    lateinit var gameDataList: MutableList<Player>
 
 
     private var tempList = mutableListOf<Item>()
@@ -173,7 +173,7 @@ class GameActivity : AppCompatActivity() {
                 totalErrors += 1
                 if (errors == 5) {
                     errors = 0
-                    hints + 1
+                    hints += 1
                     showHint(condition.second)
                 }
 
@@ -221,15 +221,17 @@ class GameActivity : AppCompatActivity() {
             }
 
             2 -> {
-                player.errors1 = totalErrors
-                player.usedHints1 = hints
-                player.time1 = getElapsedSeconds()
-                startTime = System.currentTimeMillis()
+
                 mediaPlayerBackgroundMusic.pause()
                 GlobalScope.launch(Dispatchers.Main) {
                     val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
-
+                        player.errors1 = totalErrors
+                        player.usedHints1 = hints
+                        player.time1 = getElapsedSeconds()
+                        startTime = System.currentTimeMillis()
+                        hints=0
+                        totalErrors=0
                         clickable = false
 
                         itemView.visibility = View.INVISIBLE
@@ -238,7 +240,6 @@ class GameActivity : AppCompatActivity() {
                         delay(4250)
                         mediaPlayerPopUpMusic.pause()
                         clickable = true
-
                         fadeoutcongratsAnimation()
                         tempList.addAll(figureList)
                     }
@@ -256,14 +257,17 @@ class GameActivity : AppCompatActivity() {
             }
 
             3 -> {
-                player.errors2 = totalErrors
-                player.usedHints2 = hints
-                player.time2 = getElapsedSeconds()
-                startTime = System.currentTimeMillis()
                 mediaPlayerBackgroundMusic.pause()
                 GlobalScope.launch(Dispatchers.Main) {
                     val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
+
+                        player.errors2 = totalErrors
+                        player.usedHints2 = hints
+                        player.time2 = getElapsedSeconds()
+                        startTime = System.currentTimeMillis()
+                        hints=0
+                        totalErrors=0
                         val icon1 = findViewById<ImageView>(R.id.iconauxtop)
                         val icon2 = findViewById<ImageView>(R.id.iconauxbottom)
 
@@ -299,28 +303,45 @@ class GameActivity : AppCompatActivity() {
             }
 
             4 -> {
+
                 player.errors3 = totalErrors
                 player.usedHints3 = hints
                 player.time3 = getElapsedSeconds()
                 startTime = System.currentTimeMillis()
 
                 val avatarName = intent.getStringExtra("Avatar_Name")
-                val gson = Gson()
-                val playerJson = gson.toJsonTree(player).asJsonObject
 
-                val jsonObject = if (file.exists() && file.length() > 0) {
-                    gson.fromJson(file.readText(), JsonObject::class.java)
+                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Estacions.json")
+                println("Saving player data: ")
+                println("Name: ${player.name}")
+                println("Errors1: ${player.errors1}")
+                println("Time1: ${player.time1}")
+                println("UsedHints1: ${player.usedHints1}")
+                println("Date: ${player.date}")
+
+                // Read existing players from file (if any)
+                val players = if (file.exists()) {
+                    val reader = FileReader(file)
+                    val gson = Gson()
+                    val type = object : TypeToken<MutableList<Player>>() {}.type
+                    gson.fromJson<MutableList<Player>>(reader, type) ?: mutableListOf()
                 } else {
-                    JsonObject()
+                    mutableListOf<Player>()  // If file doesn't exist, create a new list
                 }
 
+                // Step 2: Add the new player to the list
+                players.add(player)
 
-                jsonArray.add(playerJson)
+                // Step 3: Convert the list of players to JSON
+                val gson = Gson()
+                val json = gson.toJson(players)
 
-                file.writeText(gson.toJson(jsonArray))
-                println("Game data saved to ${file.absolutePath}")
+                // Step 4: Write the updated list of players back to the file
+                FileOutputStream(file).use { outputStream ->
+                    outputStream.write(json.toByteArray())  // Write the JSON data to the file
+                }
 
-
+                println("Player added to JSON file: ${player.name}")
                 val intent = Intent(this, EndGameActivity::class.java)
                 intent.putExtra("Avatar_Name", avatarName)
                 startActivity(intent)
