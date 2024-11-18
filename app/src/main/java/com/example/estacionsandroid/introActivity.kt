@@ -18,7 +18,7 @@ class IntroActivity : AppCompatActivity() {
                 )
 
         val videoView: VideoView = findViewById(R.id.tutorialLevel)
-        val videoPath : String = ("android.resource://" + packageName + "/" + R.raw.example)
+        val videoPath : String = ("android.resource://" + packageName + "/" + R.raw.videotutorial)
         val uri : Uri = Uri.parse(videoPath)
 
         videoView.setVideoURI(uri)

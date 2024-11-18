@@ -71,12 +71,12 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamelayout)
         mediaPlayerBackgroundMusic= MediaPlayer.create(this,R.raw.maingame_parasail)
-        mediaPlayerBackgroundMusic.setVolume(40F, 40F)
+        mediaPlayerBackgroundMusic.setVolume(0.5f, 0.5f)
         mediaPlayerBackgroundMusic.start()
         mediaPlayerBackgroundMusic.isLooping = true
-        mediaPlayerBackgroundMusic.setVolume(2f, 2f)
+        mediaPlayerBackgroundMusic.setVolume(0.5f, 0.5f)
 
-        mediaPlayerPopUpMusic = MediaPlayer.create(this, R.raw.specialist) // Replace with actual popup music file
+        mediaPlayerPopUpMusic = MediaPlayer.create(this, R.raw.nextlevelsoundeffect)
         mediaPlayerPopUpMusic.setVolume(3f, 3f)
 
         window.decorView.systemUiVisibility = (
