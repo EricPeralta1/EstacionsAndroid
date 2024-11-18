@@ -59,7 +59,7 @@ class GameActivity : AppCompatActivity() {
     var errors = 0
     var totalErrors = 0
     var hints = 0
-
+    lateinit var draggedImageView: ImageView
     private var startTime: Long = 0
 
 
@@ -125,6 +125,7 @@ class GameActivity : AppCompatActivity() {
                         originalY = view.y
                     firstTimeDrag= false;
                     }
+                    draggedImageView= imageView
                 }
 
                 MotionEvent.ACTION_MOVE -> {
@@ -138,9 +139,6 @@ class GameActivity : AppCompatActivity() {
                             imageView.setOnTouchListener(null)
                             view.x = originalX
                             view.y = originalY
-                            handler.postDelayed({
-                                makeDraggable(imageView) // Reapply the draggable behavior
-                            }, 500)
                         }
 
                         // Set cooldown
@@ -267,7 +265,9 @@ class GameActivity : AppCompatActivity() {
                     hints + 1
                     showHint(condition.second)
                 }
-
+                handler.postDelayed({
+                    makeDraggable(draggedImageView) // Reapply the draggable behavior
+                }, 500)
             }
         }
     }
@@ -469,7 +469,9 @@ class GameActivity : AppCompatActivity() {
         imageView.setImageResource(imageResId)
         tempList.remove(data[randomIndex])
 
-        makeDraggable(imageView)
+        handler.postDelayed({
+            makeDraggable(imageView) // Reapply the draggable behavior
+        }, 500)
 
         if (tempList.isEmpty() && level < 4) {
             level += 1
