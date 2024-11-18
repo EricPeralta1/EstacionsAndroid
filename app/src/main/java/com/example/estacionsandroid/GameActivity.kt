@@ -110,22 +110,49 @@ class GameActivity : AppCompatActivity() {
         return ((currentTime - startTime) / 1000).toInt()
     }
 
+    var firstTimeDrag = true
+    var originalX = 0f
+    var originalY = 0f
+
     @SuppressLint("ClickableViewAccessibility")
     private fun makeDraggable(imageView: ImageView) {
         imageView.setOnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // Store the original position
+                    if (firstTimeDrag) {
+                        originalX = view.x
+                        originalY = view.y
+                    firstTimeDrag= false;
+                    }
+                }
+
                 MotionEvent.ACTION_MOVE -> {
                     view.x = motionEvent.rawX - view.width / 2
                     view.y = motionEvent.rawY - view.height / 2
 
                     if (canCheckCollision) {
                         // Perform collision check
-                        checkCollisions(imageView)
+                        if (checkCollisions(imageView)) {
+
+                            imageView.setOnTouchListener(null)
+                            view.x = originalX
+                            view.y = originalY
+                            handler.postDelayed({
+                                makeDraggable(imageView) // Reapply the draggable behavior
+                            }, 500)
+                        }
 
                         // Set cooldown
                         canCheckCollision = false
                         handler.postDelayed({ canCheckCollision = true }, collisionCooldown)
                     }
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    // Reset to original position if the drag is released
+                    view.x = originalX
+                    view.y = originalY
                 }
             }
             true
@@ -133,7 +160,7 @@ class GameActivity : AppCompatActivity() {
     }
 
 
-    private fun checkCollisions(draggableView: ImageView) {
+    private fun checkCollisions(draggableView: ImageView): Boolean {
         // Check for collisions with each season ImageView
         val winterImage: ImageView = findViewById(R.id.imageWinter)
         val autumnImage: ImageView = findViewById(R.id.imageAutumn)
@@ -142,13 +169,18 @@ class GameActivity : AppCompatActivity() {
 
         if (isCollision(draggableView, winterImage)) {
             checkCorrect("Winter", winterImage)
+            return true
         } else if (isCollision(draggableView, autumnImage)) {
             checkCorrect("Autumn", autumnImage)
+            return true
         } else if (isCollision(draggableView, summerImage)) {
             checkCorrect("Summer", summerImage)
+            return true
         } else if (isCollision(draggableView, springImage)) {
             checkCorrect("Spring", springImage)
+            return true
         }
+        return false
     }
 
     private fun isCollision(view1: ImageView, view2: ImageView): Boolean {
@@ -158,8 +190,13 @@ class GameActivity : AppCompatActivity() {
         view1.getGlobalVisibleRect(rect1)
         view2.getGlobalVisibleRect(rect2)
 
+        val hitboxScaleFactor =
+            0.20f // Adjust this value for the desired hitbox size (e.g., 50% smaller)
+        val widthReduction = (rect1.width() * (1 - hitboxScaleFactor)).toInt() / 2
+        val heightReduction = (rect1.height() * (1 - hitboxScaleFactor)).toInt() / 2
 
-        println("Rect1: $rect1, Rect2: $rect2")
+        rect1.inset(widthReduction, heightReduction)
+
         return rect1.intersect(rect2)
     }
 
