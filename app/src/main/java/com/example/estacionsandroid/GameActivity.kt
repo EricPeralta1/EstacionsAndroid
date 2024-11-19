@@ -1,6 +1,5 @@
 package com.example.estacionsandroid
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -27,6 +26,14 @@ import java.util.Random
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import com.google.gson.Gson
+import java.io.File
+import java.io.FileOutputStream
+import android.os.Environment
+import com.google.gson.JsonArray
+import com.google.gson.reflect.TypeToken
+import java.io.FileReader
+
 
 class GameActivity : AppCompatActivity() {
 
@@ -55,6 +62,8 @@ class GameActivity : AppCompatActivity() {
         Item("flowertshirt", 4),
         Item("raincoat", 3)
     )
+    val fileName = "Estacions.json"
+
 
     private var tempList = mutableListOf<Item>()
     private val seasonList = mutableListOf<ImageView>()
@@ -268,7 +277,7 @@ class GameActivity : AppCompatActivity() {
                 totalErrors += 1
                 if (errors == 5) {
                     errors = 0
-                    hints + 1
+                    hints += 1
                     showHint(condition.second)
                 }
                 handler.postDelayed({
@@ -291,15 +300,12 @@ class GameActivity : AppCompatActivity() {
             1 -> {
                 clueWinterImage.startAnimation(clueAnimation)
             }
-
             2 -> {
                 clueSummerImage.startAnimation(clueAnimation)
             }
-
             3 -> {
                 clueAutumnImage.startAnimation(clueAnimation)
             }
-
             4 -> {
                 clueSpringImage.startAnimation(clueAnimation)
             }
@@ -321,24 +327,25 @@ class GameActivity : AppCompatActivity() {
             }
 
             2 -> {
-                player.errors1 = totalErrors
-                player.usedHints1 = hints
-                player.time1 = getElapsedSeconds()
-                startTime = System.currentTimeMillis()
+
                 mediaPlayerBackgroundMusic.pause()
-                GlobalScope.launch(Dispatchers.Main) {
+                GlobalScope.launch(Dispatchers.Main){
                     val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
-
+                        player.errors1 = totalErrors
+                        player.usedHints1 = hints
+                        player.time1 = getElapsedSeconds()
+                        startTime = System.currentTimeMillis()
+                        hints=0
+                        totalErrors=0
                         clickable = false
 
-                        itemView.visibility = View.INVISIBLE
+                    itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
                         mediaPlayerPopUpMusic.start()
                         delay(4250)
                         mediaPlayerPopUpMusic.pause()
                         clickable = true
-
                         fadeoutcongratsAnimation()
                         tempList.addAll(figureList)
                     }
@@ -351,26 +358,28 @@ class GameActivity : AppCompatActivity() {
                     iconauxView2.visibility = View.INVISIBLE
                     itemView.visibility = View.VISIBLE
 
-                    setImage(tempList)
+                setImage(tempList)
                 }
             }
 
             3 -> {
-                player.errors2 = totalErrors
-                player.usedHints2 = hints
-                player.time2 = getElapsedSeconds()
-                startTime = System.currentTimeMillis()
-                mediaPlayerBackgroundMusic.pause()
-                GlobalScope.launch(Dispatchers.Main) {
+                GlobalScope.launch(Dispatchers.Main){
                     val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
+
+                        player.errors2 = totalErrors
+                        player.usedHints2 = hints
+                        player.time2 = getElapsedSeconds()
+                        startTime = System.currentTimeMillis()
+                        hints=0
+                        totalErrors=0
                         val icon1 = findViewById<ImageView>(R.id.iconauxtop)
                         val icon2 = findViewById<ImageView>(R.id.iconauxbottom)
 
                         icon1.setBackgroundResource(R.drawable.snowflakeicon)
                         icon2.setBackgroundResource(R.drawable.flowericon)
 
-                        clickable = false
+                        clickable=false
 
                         itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
@@ -378,7 +387,7 @@ class GameActivity : AppCompatActivity() {
                         delay(4250)
                         mediaPlayerPopUpMusic.pause()
 
-                        clickable = true
+                        clickable=true
 
                         fadeoutcongratsAnimation()
                         tempList.addAll(clothesList)
@@ -399,11 +408,44 @@ class GameActivity : AppCompatActivity() {
             }
 
             4 -> {
-                player.errors2 = totalErrors
-                player.usedHints2 = hints
-                player.time2 = getElapsedSeconds()
+
+                player.errors3 = totalErrors
+                player.usedHints3 = hints
+                player.time3 = getElapsedSeconds()
                 startTime = System.currentTimeMillis()
                 val avatarName = intent.getStringExtra("Avatar_Name")
+
+                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Estacions.json")
+                println("Saving player data: ")
+                println("Name: ${player.name}")
+                println("Errors1: ${player.errors1}")
+                println("Time1: ${player.time1}")
+                println("UsedHints1: ${player.usedHints1}")
+                println("Date: ${player.date}")
+
+                // Read existing players from file (if any)
+                val players = if (file.exists()) {
+                    val reader = FileReader(file)
+                    val gson = Gson()
+                    val type = object : TypeToken<MutableList<Player>>() {}.type
+                    gson.fromJson<MutableList<Player>>(reader, type) ?: mutableListOf()
+                } else {
+                    mutableListOf<Player>()  // If file doesn't exist, create a new list
+                }
+
+                // Step 2: Add the new player to the list
+                players.add(player)
+
+                // Step 3: Convert the list of players to JSON
+                val gson = Gson()
+                val json = gson.toJson(players)
+
+                // Step 4: Write the updated list of players back to the file
+                FileOutputStream(file).use { outputStream ->
+                    outputStream.write(json.toByteArray())  // Write the JSON data to the file
+                }
+
+                println("Player added to JSON file: ${player.name}")
                 val intent = Intent(this, EndGameActivity::class.java)
                 intent.putExtra("Avatar_Name", avatarName)
                 startActivity(intent)
@@ -414,6 +456,7 @@ class GameActivity : AppCompatActivity() {
 
             else -> println("wtf, just how did we get here")
         }
+
 
 
     }
@@ -446,14 +489,14 @@ class GameActivity : AppCompatActivity() {
         iconauxView2.visibility = View.VISIBLE
     }
 
-    private fun fadeoutcongratsAnimation() {
+    private fun fadeoutcongratsAnimation(){
         val congratsView = findViewById<ImageView>(R.id.congratulationstext)
         val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
         val iconauxView2 = findViewById<ImageView>(R.id.iconauxbottom)
         val animationFadeOut = AnimationSet(false)
-        val fadeOut = AnimationUtils.loadAnimation(this, R.anim.fadeout_animation)
+        val fadeOut  = AnimationUtils.loadAnimation(this, R.anim.fadeout_animation)
         animationFadeOut.addAnimation(fadeOut)
-        animationFadeOut.duration = 1000
+        animationFadeOut.duration= 1000
 
         congratsView.startAnimation(animationFadeOut)
         iconauxView1.startAnimation(animationFadeOut)
@@ -470,15 +513,8 @@ class GameActivity : AppCompatActivity() {
         val imageResId = resources.getIdentifier(selectedItem.img, "drawable", packageName)
         item = data[randomIndex]
 
-
-
         imageView.setImageResource(imageResId)
         tempList.remove(data[randomIndex])
-
-        handler.postDelayed({
-            makeDraggable(imageView) // Reapply the draggable behavior
-        }, 500)
-
         if (tempList.isEmpty() && level < 4) {
             level += 1
             firstTime = true
