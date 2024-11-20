@@ -522,6 +522,14 @@ class GameActivity : AppCompatActivity() {
 
         imageView.setImageResource(imageResId)
         tempList.remove(data[randomIndex])
+        draggedImageView= imageView
+        handler.postDelayed({
+            makeDraggable(imageView)
+
+        },500
+        )
+
+
         if (tempList.isEmpty() && level < 4) {
             level += 1
             firstTime = true
