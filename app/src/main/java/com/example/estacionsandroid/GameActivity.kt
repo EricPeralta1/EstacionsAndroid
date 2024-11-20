@@ -1,10 +1,12 @@
 package com.example.estacionsandroid
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
@@ -30,10 +32,9 @@ import java.io.FileReader
 
 class GameActivity : AppCompatActivity() {
 
-    private var clickable= true
+    private var clickable = true
     private lateinit var mediaPlayerBackgroundMusic: MediaPlayer
     private lateinit var mediaPlayerPopUpMusic: MediaPlayer
-
 
 
     private var colorList = mutableListOf(
@@ -68,20 +69,25 @@ class GameActivity : AppCompatActivity() {
     var errors = 0
     var totalErrors = 0
     var hints = 0
-
+    lateinit var draggedImageView: ImageView
     private var startTime: Long = 0
 
+
+    private var canCheckCollision = true
+    private val collisionCooldown = 500L  // 500 milliseconds cooldown
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamelayout)
-        mediaPlayerBackgroundMusic= MediaPlayer.create(this,R.raw.maingame_parasail)
+        mediaPlayerBackgroundMusic = MediaPlayer.create(this, R.raw.maingame_parasail)
         mediaPlayerBackgroundMusic.setVolume(40F, 40F)
         mediaPlayerBackgroundMusic.start()
         mediaPlayerBackgroundMusic.isLooping = true
         mediaPlayerBackgroundMusic.setVolume(2f, 2f)
 
-        mediaPlayerPopUpMusic = MediaPlayer.create(this, R.raw.specialist) // Replace with actual popup music file
+        mediaPlayerPopUpMusic =
+            MediaPlayer.create(this, R.raw.specialist) // Replace with actual popup music file
         mediaPlayerPopUpMusic.setVolume(3f, 3f)
 
         window.decorView.systemUiVisibility = (
@@ -98,20 +104,109 @@ class GameActivity : AppCompatActivity() {
 
         onClickListeners(winterImage, autumnImage, summerImage, springImage)
         val playerName: String
-        if (intent.getStringExtra("Avatar_Name")!= null){
-         playerName= intent.getStringExtra("Avatar_Name").toString()
-        } else  {
-            playerName= "batman"
+        if (intent.getStringExtra("Avatar_Name") != null) {
+            playerName = intent.getStringExtra("Avatar_Name").toString()
+        } else {
+            playerName = "batman"
         }
 
         player = Player(playerName)
-        player.date= SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().time)
+        player.date = SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().time)
         startTime = System.currentTimeMillis()
     }
 
     private fun getElapsedSeconds(): Int {
         val currentTime = System.currentTimeMillis()
         return ((currentTime - startTime) / 1000).toInt()
+    }
+
+    var firstTimeDrag = true
+    var originalX = 0f
+    var originalY = 0f
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun makeDraggable(imageView: ImageView) {
+        imageView.setOnTouchListener { view, motionEvent ->
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // Store the original position
+                    if (firstTimeDrag) {
+                        originalX = view.x
+                        originalY = view.y
+                    firstTimeDrag= false;
+                    }
+                    draggedImageView= imageView
+                }
+
+                MotionEvent.ACTION_MOVE -> {
+                    view.x = motionEvent.rawX - view.width / 2
+                    view.y = motionEvent.rawY - view.height / 2
+
+                    if (canCheckCollision) {
+                        // Perform collision check
+                        if (checkCollisions(imageView)) {
+
+                            imageView.setOnTouchListener(null)
+                            view.x = originalX
+                            view.y = originalY
+                        }
+
+                        // Set cooldown
+                        canCheckCollision = false
+                        handler.postDelayed({ canCheckCollision = true }, collisionCooldown)
+                    }
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    // Reset to original position if the drag is released
+                    view.x = originalX
+                    view.y = originalY
+                }
+            }
+            true
+        }
+    }
+
+
+    private fun checkCollisions(draggableView: ImageView): Boolean {
+        // Check for collisions with each season ImageView
+        val winterImage: ImageView = findViewById(R.id.imageWinter)
+        val autumnImage: ImageView = findViewById(R.id.imageAutumn)
+        val summerImage: ImageView = findViewById(R.id.imageSummer)
+        val springImage: ImageView = findViewById(R.id.imageSpring)
+
+        if (isCollision(draggableView, winterImage)) {
+            checkCorrect("Winter", winterImage)
+            return true
+        } else if (isCollision(draggableView, autumnImage)) {
+            checkCorrect("Autumn", autumnImage)
+            return true
+        } else if (isCollision(draggableView, summerImage)) {
+            checkCorrect("Summer", summerImage)
+            return true
+        } else if (isCollision(draggableView, springImage)) {
+            checkCorrect("Spring", springImage)
+            return true
+        }
+        return false
+    }
+
+    private fun isCollision(view1: ImageView, view2: ImageView): Boolean {
+        val rect1 = android.graphics.Rect()
+        val rect2 = android.graphics.Rect()
+
+        view1.getGlobalVisibleRect(rect1)
+        view2.getGlobalVisibleRect(rect2)
+
+        val hitboxScaleFactor =
+            0.20f // Adjust this value for the desired hitbox size (e.g., 50% smaller)
+        val widthReduction = (rect1.width() * (1 - hitboxScaleFactor)).toInt() / 2
+        val heightReduction = (rect1.height() * (1 - hitboxScaleFactor)).toInt() / 2
+
+        rect1.inset(widthReduction, heightReduction)
+
+        return rect1.intersect(rect2)
     }
 
     override fun onPause() {
@@ -124,6 +219,7 @@ class GameActivity : AppCompatActivity() {
         super.onResume()
         mediaPlayerBackgroundMusic.start()
     }
+
     private fun onClickListeners(
         winterImage: ImageView,
         autumnImage: ImageView,
@@ -131,20 +227,24 @@ class GameActivity : AppCompatActivity() {
         springImage: ImageView
     ) {
         winterImage.setOnClickListener {
-            if (clickable){
-            checkCorrect("Winter", winterImage)}
+            if (clickable) {
+                checkCorrect("Winter", winterImage)
+            }
         }
         autumnImage.setOnClickListener {
-            if (clickable){
-            checkCorrect("Autumn", autumnImage)}
+            if (clickable) {
+                checkCorrect("Autumn", autumnImage)
+            }
         }
         summerImage.setOnClickListener {
-            if (clickable){
-            checkCorrect("Summer", summerImage)}
+            if (clickable) {
+                checkCorrect("Summer", summerImage)
+            }
         }
         springImage.setOnClickListener {
-            if (clickable){
-            checkCorrect("Spring", springImage)}
+            if (clickable) {
+                checkCorrect("Spring", springImage)
+            }
         }
     }
 
@@ -176,7 +276,9 @@ class GameActivity : AppCompatActivity() {
                     hints += 1
                     showHint(condition.second)
                 }
-
+                handler.postDelayed({
+                    makeDraggable(draggedImageView) // Reapply the draggable behavior
+                }, 500)
             }
         }
     }
@@ -207,7 +309,7 @@ class GameActivity : AppCompatActivity() {
     }
 
 
-    private fun changeImage(seasonList : MutableList<ImageView>) {
+    private fun changeImage(seasonList: MutableList<ImageView>) {
         if (seasonList.size >= 4) {
             for (item in seasonList) {
                 item.visibility = View.VISIBLE
@@ -223,7 +325,7 @@ class GameActivity : AppCompatActivity() {
             2 -> {
 
                 mediaPlayerBackgroundMusic.pause()
-                GlobalScope.launch(Dispatchers.Main) {
+                GlobalScope.launch(Dispatchers.Main){
                     val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
                         player.errors1 = totalErrors
@@ -234,7 +336,7 @@ class GameActivity : AppCompatActivity() {
                         totalErrors=0
                         clickable = false
 
-                        itemView.visibility = View.INVISIBLE
+                    itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
                         mediaPlayerPopUpMusic.start()
                         delay(4250)
@@ -252,13 +354,12 @@ class GameActivity : AppCompatActivity() {
                     iconauxView2.visibility = View.INVISIBLE
                     itemView.visibility = View.VISIBLE
 
-                    setImage(tempList)
+                setImage(tempList)
                 }
             }
 
             3 -> {
-                mediaPlayerBackgroundMusic.pause()
-                GlobalScope.launch(Dispatchers.Main) {
+                GlobalScope.launch(Dispatchers.Main){
                     val itemView = findViewById<ImageView>(R.id.itemView)
                     if (firstTime) {
 
@@ -274,7 +375,7 @@ class GameActivity : AppCompatActivity() {
                         icon1.setBackgroundResource(R.drawable.snowflakeicon)
                         icon2.setBackgroundResource(R.drawable.flowericon)
 
-                        clickable = false
+                        clickable=false
 
                         itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
@@ -282,7 +383,7 @@ class GameActivity : AppCompatActivity() {
                         delay(4250)
                         mediaPlayerPopUpMusic.pause()
 
-                        clickable = true
+                        clickable=true
 
                         fadeoutcongratsAnimation()
                         tempList.addAll(clothesList)
@@ -308,7 +409,6 @@ class GameActivity : AppCompatActivity() {
                 player.usedHints3 = hints
                 player.time3 = getElapsedSeconds()
                 startTime = System.currentTimeMillis()
-
                 val avatarName = intent.getStringExtra("Avatar_Name")
 
                 val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Estacions.json")
@@ -411,6 +511,14 @@ class GameActivity : AppCompatActivity() {
 
         imageView.setImageResource(imageResId)
         tempList.remove(data[randomIndex])
+        draggedImageView= imageView
+        handler.postDelayed({
+            makeDraggable(imageView)
+
+        },500
+        )
+
+
         if (tempList.isEmpty() && level < 4) {
             level += 1
             firstTime = true
