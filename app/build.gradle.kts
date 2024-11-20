@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.estacionsandroid"
-        minSdk = 24
+        minSdk = 29
         targetSdk = 30
         versionCode = 1
         versionName = "1.0"
@@ -42,6 +42,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation ("com.google.code.gson:gson:2.8.8")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
