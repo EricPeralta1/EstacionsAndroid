@@ -121,8 +121,17 @@
             android:scaleType="fitXY"
             android:src="@drawable/autumn" />
 
-    </LinearLayout>
 
+
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/itemView"
+        android:layout_width="265dp"
+        android:layout_height="265dp"
+        android:layout_marginStart="204dp"
+        android:layout_marginBottom="284dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
     <ImageView
         android:id="@+id/congratulationstext"
         android:layout_width="486dp"
