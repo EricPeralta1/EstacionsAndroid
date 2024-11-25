@@ -8,6 +8,10 @@ import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 
 class IntroActivity : AppCompatActivity() {
+
+    private lateinit var videoView: VideoView
+    private var videoTime: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.introlayout)
@@ -17,7 +21,7 @@ class IntroActivity : AppCompatActivity() {
                         View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 )
 
-        val videoView: VideoView = findViewById(R.id.tutorialLevel)
+        videoView = findViewById(R.id.tutorialLevel)
         val videoPath : String = ("android.resource://" + packageName + "/" + R.raw.videotutorial)
         val uri : Uri = Uri.parse(videoPath)
 
@@ -33,5 +37,21 @@ class IntroActivity : AppCompatActivity() {
             finish()
         }
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (videoView.isPlaying) {
+            videoTime = videoView.currentPosition
+            videoView.pause()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!videoView.isPlaying) {
+            videoView.seekTo(videoTime)
+            videoView.start()
+        }
     }
 }
