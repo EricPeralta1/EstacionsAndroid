@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 class EndGameActivity : AppCompatActivity() {
     private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var mediaPlayerEndingNarrator: MediaPlayer
+
     private lateinit var soundPool: SoundPool
     private var soundId: Int = 0
 
@@ -18,8 +20,14 @@ class EndGameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.endgamelayout)
         mediaPlayer= MediaPlayer.create(this,R.raw.winscreentheme_dkultimatewin)
-        mediaPlayer.setVolume(40F, 40F)
+        mediaPlayer.setVolume(0.3F, 0.3F)
         mediaPlayer.start()
+
+        mediaPlayerEndingNarrator= MediaPlayer.create(this,R.raw.narratorending)
+        mediaPlayerEndingNarrator.start()
+        mediaPlayerEndingNarrator.setOnCompletionListener {
+            mediaPlayer.setVolume(1f,1f)
+        }
 
         window.decorView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
@@ -41,6 +49,8 @@ class EndGameActivity : AppCompatActivity() {
         val restartButton = findViewById<ImageView>(R.id.restartButton)
 
         restartButton.setOnClickListener {
+            mediaPlayer.stop()
+            mediaPlayerEndingNarrator.stop()
             soundPool.play(soundId, 1f, 1f, 0, 0, 1f)
             val intent = Intent(this, AvatarActivity::class.java)
             startActivity(intent)
@@ -50,10 +60,12 @@ class EndGameActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         mediaPlayer.pause()
+        mediaPlayerEndingNarrator.pause()
     }
 
     override fun onResume() {
         super.onResume()
         mediaPlayer.start()
+        mediaPlayerEndingNarrator.start()
     }
 }

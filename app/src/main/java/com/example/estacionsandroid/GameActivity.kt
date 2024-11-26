@@ -36,7 +36,10 @@ class GameActivity : AppCompatActivity() {
     private var clickable = true
     private lateinit var mediaPlayerBackgroundMusic: MediaPlayer
     private lateinit var mediaPlayerPopUpMusic: MediaPlayer
+    private lateinit var mediaPlayerNarratorHint: MediaPlayer
+    private lateinit var mediaPlayerNarratorLvlComplete: MediaPlayer
     private lateinit var soundPool: SoundPool
+    private lateinit var soundPoolcolors: SoundPool
     private var soundIdTap: Int = 0
     private var soundIdCorrect: Int = 0
 
@@ -69,6 +72,7 @@ class GameActivity : AppCompatActivity() {
     private var tempList = mutableListOf<Item>()
     private val seasonList = mutableListOf<ImageView>()
     lateinit var player: Player
+    private var soundMap = hashMapOf<Int, Int>()
     var level = 1
     var firstTime = true
     lateinit var item: Item
@@ -86,26 +90,13 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamelayout)
-        mediaPlayerBackgroundMusic= MediaPlayer.create(this,R.raw.maingame_parasail)
-        mediaPlayerBackgroundMusic.setVolume(0.5f, 0.5f)
+        mediaPlayerBackgroundMusic = MediaPlayer.create(this, R.raw.maingame_parasail)
+        mediaPlayerBackgroundMusic.setVolume(0.3F, 0.3F)
         mediaPlayerBackgroundMusic.start()
         mediaPlayerBackgroundMusic.isLooping = true
-        mediaPlayerBackgroundMusic.setVolume(0.5f, 0.5f)
 
         mediaPlayerPopUpMusic = MediaPlayer.create(this, R.raw.nextlevelsoundeffect)
-        mediaPlayerPopUpMusic.setVolume(3f, 3f)
-
-        window.decorView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                )
-        tempList.addAll(colorList)
-        setImage(tempList)
-        val winterImage: ImageView = findViewById(R.id.imageWinter)
-        val autumnImage: ImageView = findViewById(R.id.imageAutumn)
-        val summerImage: ImageView = findViewById(R.id.imageSummer)
-        val springImage: ImageView = findViewById(R.id.imageSpring)
+        mediaPlayerPopUpMusic.setVolume(0.2f, 0.2f)
 
         soundPool = SoundPool.Builder()
             .setMaxStreams(2)
@@ -113,6 +104,31 @@ class GameActivity : AppCompatActivity() {
 
         soundIdTap = soundPool.load(this, R.raw.tapeffect, 1)
         soundIdCorrect = soundPool.load(this, R.raw.correctefect, 1)
+
+        soundPoolcolors = SoundPool.Builder().setMaxStreams(5).build()
+
+        soundMap[1] = soundPoolcolors.load(this, R.raw.grabacion, 1)
+        soundMap[2] = soundPoolcolors.load(this, R.raw.grabacion, 1)
+        soundMap[3] = soundPoolcolors.load(this, R.raw.grabacion, 1)
+        soundMap[4] = soundPoolcolors.load(this, R.raw.grabacion, 1)
+
+        mediaPlayerNarratorHint= MediaPlayer.create(this,R.raw.narratorhint)
+        mediaPlayerNarratorHint.setVolume(1f, 1f)
+        mediaPlayerNarratorLvlComplete= MediaPlayer.create(this,R.raw.narratorwin)
+        mediaPlayerNarratorLvlComplete.setVolume(1f, 1f)
+
+        window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_FULLSCREEN or
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                )
+
+        tempList.addAll(colorList)
+        setImage(tempList)
+        val winterImage: ImageView = findViewById(R.id.imageWinter)
+        val autumnImage: ImageView = findViewById(R.id.imageAutumn)
+        val summerImage: ImageView = findViewById(R.id.imageSummer)
+        val springImage: ImageView = findViewById(R.id.imageSpring)
 
         onClickListeners(winterImage, autumnImage, summerImage, springImage)
         val playerName: String
@@ -224,13 +240,15 @@ class GameActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         mediaPlayerBackgroundMusic.pause()
-        mediaPlayerPopUpMusic.pause()
+
     }
 
     override fun onResume() {
         super.onResume()
         mediaPlayerBackgroundMusic.start()
+
     }
+
     private fun onClickListeners(
         winterImage: ImageView,
         autumnImage: ImageView,
@@ -238,24 +256,32 @@ class GameActivity : AppCompatActivity() {
         springImage: ImageView
     ) {
         winterImage.setOnClickListener {
-            if (clickable){
+            if (clickable) {
+                checkCorrect("Winter", winterImage)
                 soundPool.play(soundIdTap, 1f, 1f, 0, 0, 1f)
-                checkCorrect("Winter", winterImage)}
+
+            }
         }
         autumnImage.setOnClickListener {
-            if (clickable){
+            if (clickable) {
+                checkCorrect("Autumn", autumnImage)
                 soundPool.play(soundIdTap, 1f, 1f, 0, 0, 1f)
-                checkCorrect("Autumn", autumnImage)}
+
+            }
         }
         summerImage.setOnClickListener {
-            if (clickable){
+            if (clickable) {
+                checkCorrect("Summer", summerImage)
                 soundPool.play(soundIdTap, 1f, 1f, 0, 0, 1f)
-                checkCorrect("Summer", summerImage)}
+
+            }
         }
         springImage.setOnClickListener {
-            if (clickable){
+            if (clickable) {
+                checkCorrect("Spring", springImage)
                 soundPool.play(soundIdTap, 1f, 1f, 0, 0, 1f)
-                checkCorrect("Spring", springImage)}
+
+            }
         }
     }
 
@@ -272,6 +298,7 @@ class GameActivity : AppCompatActivity() {
                 image.visibility = View.INVISIBLE
                 changeImage(seasonList)
                 errors = 0
+
                 soundPool.play(soundIdCorrect, 1f, 1f, 0, 0, 1f)
 
                 clueWinterImage.clearAnimation()
@@ -287,6 +314,11 @@ class GameActivity : AppCompatActivity() {
                     errors = 0
                     hints += 1
                     showHint(condition.second)
+                    mediaPlayerBackgroundMusic.setVolume(0.5F,0.5F)
+                    mediaPlayerNarratorHint.start()
+                    mediaPlayerNarratorHint.setOnCompletionListener {
+                        mediaPlayerBackgroundMusic.setVolume(1F,1F)
+                    }
                 }
                 handler.postDelayed({
                     makeDraggable(draggedImageView) // Reapply the draggable behavior
@@ -348,16 +380,20 @@ class GameActivity : AppCompatActivity() {
                         totalErrors=0
                         clickable = false
 
-                    itemView.visibility = View.INVISIBLE
+                        itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
                         mediaPlayerPopUpMusic.start()
+                        mediaPlayerNarratorLvlComplete.start()
                         delay(4250)
+
                         mediaPlayerPopUpMusic.pause()
+                        mediaPlayerNarratorLvlComplete.pause()
                         clickable = true
                         fadeoutcongratsAnimation()
                         tempList.addAll(figureList)
                     }
                     mediaPlayerBackgroundMusic.start()
+
                     val congratsView = findViewById<ImageView>(R.id.congratulationstext)
                     val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
                     val iconauxView2 = findViewById<ImageView>(R.id.iconauxbottom)
@@ -391,16 +427,19 @@ class GameActivity : AppCompatActivity() {
 
                         itemView.visibility = View.INVISIBLE
                         showcongratsAnimation()
+                        mediaPlayerBackgroundMusic.pause()
                         mediaPlayerPopUpMusic.start()
+                        mediaPlayerNarratorLvlComplete.start()
                         delay(4250)
-                        mediaPlayerPopUpMusic.pause()
 
+                        mediaPlayerPopUpMusic.stop()
+                        mediaPlayerNarratorLvlComplete.stop()
+                        mediaPlayerBackgroundMusic.start()
                         clickable=true
 
                         fadeoutcongratsAnimation()
                         tempList.addAll(clothesList)
                     }
-                    mediaPlayerBackgroundMusic.start()
 
                     val congratsView = findViewById<ImageView>(R.id.congratulationstext)
                     val iconauxView1 = findViewById<ImageView>(R.id.iconauxtop)
@@ -424,13 +463,6 @@ class GameActivity : AppCompatActivity() {
                 val avatarName = intent.getStringExtra("Avatar_Name")
 
                 val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Estacions.json")
-                println("Saving player data: ")
-                println("Name: ${player.name}")
-                println("Errors1: ${player.errors1}")
-                println("Time1: ${player.time1}")
-                println("UsedHints1: ${player.usedHints1}")
-                println("Date: ${player.date}")
-
                 // Read existing players from file (if any)
                 val players = if (file.exists()) {
                     val reader = FileReader(file)
@@ -464,6 +496,7 @@ class GameActivity : AppCompatActivity() {
 
             else -> println("wtf, just how did we get here")
         }
+
 
 
     }
@@ -529,6 +562,17 @@ class GameActivity : AppCompatActivity() {
         },500
         )
 
+        mediaPlayerBackgroundMusic.setVolume(1f, 1f)
+
+        if (level==1){
+        when (selectedItem.id) {
+
+            1 -> playSound(1)
+            2 -> playSound(2)
+            3 -> playSound(3)
+            4 -> playSound(4)
+        }
+    }
 
         if (tempList.isEmpty() && level < 4) {
             level += 1
@@ -536,5 +580,13 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    private fun playSound(itemId: Int) {
+        Handler(Looper.getMainLooper()).postDelayed({
 
+            soundMap[itemId]?.let { soundId ->
+                soundPoolcolors.play(soundId, 1f, 1f, 1, 0, 1f)
+            }
+        }, 1000)
+
+    }
 }

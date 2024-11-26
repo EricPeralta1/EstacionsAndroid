@@ -22,6 +22,7 @@ class AvatarActivity : AppCompatActivity() {
     private lateinit var startButton: ImageView
     private lateinit var avatarCopy: ImageView
     private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var mediaPlayerIntro: MediaPlayer
     private lateinit var soundPool: SoundPool
     private var soundId: Int = 0
 
@@ -52,7 +53,12 @@ class AvatarActivity : AppCompatActivity() {
         mediaPlayer= MediaPlayer.create(this,R.raw.menutheme)
         mediaPlayer.start()
         mediaPlayer.isLooping = true
-        mediaPlayer.setVolume(1f, 1f)
+        mediaPlayer.setVolume(0.5f, 0.5f)
+        mediaPlayerIntro = MediaPlayer.create(this,R.raw.introvoice)
+        mediaPlayerIntro.start()
+        mediaPlayerIntro.setOnCompletionListener {
+            mediaPlayer.setVolume(0.7f, 0.7f)
+        }
 
 
         avatarCopy = findViewById(R.id.avatarCopy)
@@ -118,7 +124,8 @@ class AvatarActivity : AppCompatActivity() {
             val intent= Intent(this, IntroActivity::class.java)
             intent.putExtra("Avatar_Name", avatarName)
             startActivity(intent)
-            mediaPlayer.pause()
+            mediaPlayer.stop()
+            mediaPlayerIntro.stop()
 
             finish()
         }
