@@ -90,11 +90,14 @@ class AvatarActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         mediaPlayer.pause()
+        mediaPlayerIntro.pause()
     }
 
     override fun onResume() {
         super.onResume()
         mediaPlayer.start()
+        mediaPlayerIntro.start()
+
     }
     private fun updateAdapter(){
         lstAvatar = findViewById(R.id.AvatarView)

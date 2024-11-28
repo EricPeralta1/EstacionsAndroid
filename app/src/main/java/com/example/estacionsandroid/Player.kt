@@ -15,8 +15,9 @@ class Player (
     var usedHints3: Int,
     var time3: Int,
 
-    var date: String
+    var date: String,
+    var time: String
 ){
 
-    constructor(name: String) : this(name, 0, 0, 0, 0, 0, 0, 0, 0, 0, "")
+    constructor(name: String) : this(name, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "")
 }

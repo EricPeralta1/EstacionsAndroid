@@ -87,6 +87,7 @@ class GameActivity : AppCompatActivity() {
     private val collisionCooldown = 500L  // 500 milliseconds cooldown
     private val handler = Handler(Looper.getMainLooper())
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamelayout)
@@ -139,7 +140,9 @@ class GameActivity : AppCompatActivity() {
         }
 
         player = Player(playerName)
-        player.date = SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().time)
+        // Eg. 27/11/2024 14:30:45
+       player.date = SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
+        player.time= SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
         startTime = System.currentTimeMillis()
     }
 
@@ -314,7 +317,7 @@ class GameActivity : AppCompatActivity() {
                     errors = 0
                     hints += 1
                     showHint(condition.second)
-                    mediaPlayerBackgroundMusic.setVolume(0.5F,0.5F)
+                    mediaPlayerBackgroundMusic.setVolume(0.7F,0.7F)
                     mediaPlayerNarratorHint.start()
                     mediaPlayerNarratorHint.setOnCompletionListener {
                         mediaPlayerBackgroundMusic.setVolume(1F,1F)
@@ -384,6 +387,7 @@ class GameActivity : AppCompatActivity() {
                         showcongratsAnimation()
                         mediaPlayerPopUpMusic.start()
                         mediaPlayerNarratorLvlComplete.start()
+                        mediaPlayerNarratorLvlComplete.setVolume(0.7f,0.7f)
                         delay(4250)
 
                         mediaPlayerPopUpMusic.pause()
@@ -470,22 +474,18 @@ class GameActivity : AppCompatActivity() {
                     val type = object : TypeToken<MutableList<Player>>() {}.type
                     gson.fromJson<MutableList<Player>>(reader, type) ?: mutableListOf()
                 } else {
-                    mutableListOf<Player>()  // If file doesn't exist, create a new list
+                    mutableListOf<Player>()
                 }
 
-                // Step 2: Add the new player to the list
                 players.add(player)
-
-                // Step 3: Convert the list of players to JSON
                 val gson = Gson()
                 val json = gson.toJson(players)
 
-                // Step 4: Write the updated list of players back to the file
+
                 FileOutputStream(file).use { outputStream ->
-                    outputStream.write(json.toByteArray())  // Write the JSON data to the file
+                    outputStream.write(json.toByteArray())
                 }
 
-                println("Player added to JSON file: ${player.name}")
                 val intent = Intent(this, EndGameActivity::class.java)
                 intent.putExtra("Avatar_Name", avatarName)
                 startActivity(intent)
