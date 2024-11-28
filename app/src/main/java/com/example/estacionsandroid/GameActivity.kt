@@ -92,7 +92,7 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamelayout)
         mediaPlayerBackgroundMusic = MediaPlayer.create(this, R.raw.maingame_parasail)
-        mediaPlayerBackgroundMusic.setVolume(0.3F, 0.3F)
+        mediaPlayerBackgroundMusic.setVolume(0.2F, 0.2F)
         mediaPlayerBackgroundMusic.start()
         mediaPlayerBackgroundMusic.isLooping = true
 
@@ -108,10 +108,10 @@ class GameActivity : AppCompatActivity() {
 
         soundPoolcolors = SoundPool.Builder().setMaxStreams(5).build()
 
-        soundMap[1] = soundPoolcolors.load(this, R.raw.grabacion, 1)
-        soundMap[2] = soundPoolcolors.load(this, R.raw.grabacion, 1)
-        soundMap[3] = soundPoolcolors.load(this, R.raw.grabacion, 1)
-        soundMap[4] = soundPoolcolors.load(this, R.raw.grabacion, 1)
+        soundMap[1] = soundPoolcolors.load(this, R.raw.blanc, 1)
+        soundMap[2] = soundPoolcolors.load(this, R.raw.groc, 1)
+        soundMap[3] = soundPoolcolors.load(this, R.raw.taronja, 1)
+        soundMap[4] = soundPoolcolors.load(this, R.raw.rosa, 1)
 
         mediaPlayerNarratorHint= MediaPlayer.create(this,R.raw.narratorhint)
         mediaPlayerNarratorHint.setVolume(1f, 1f)
@@ -302,6 +302,7 @@ class GameActivity : AppCompatActivity() {
                 changeImage(seasonList)
                 errors = 0
 
+                soundPoolcolors.stop(item.id)
                 soundPool.play(soundIdCorrect, 1f, 1f, 0, 0, 1f)
 
                 clueWinterImage.clearAnimation()
@@ -317,10 +318,10 @@ class GameActivity : AppCompatActivity() {
                     errors = 0
                     hints += 1
                     showHint(condition.second)
-                    mediaPlayerBackgroundMusic.setVolume(0.7F,0.7F)
+                    mediaPlayerBackgroundMusic.setVolume(0.2F,0.2F)
                     mediaPlayerNarratorHint.start()
                     mediaPlayerNarratorHint.setOnCompletionListener {
-                        mediaPlayerBackgroundMusic.setVolume(1F,1F)
+                        mediaPlayerBackgroundMusic.setVolume(0.2F,0.2F)
                     }
                 }
                 handler.postDelayed({
@@ -562,7 +563,7 @@ class GameActivity : AppCompatActivity() {
         },500
         )
 
-        mediaPlayerBackgroundMusic.setVolume(1f, 1f)
+        mediaPlayerBackgroundMusic.setVolume(0.2f, 0.2f)
 
         if (level==1){
         when (selectedItem.id) {
