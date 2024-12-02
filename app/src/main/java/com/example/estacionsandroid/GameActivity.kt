@@ -315,6 +315,11 @@ class GameActivity : AppCompatActivity() {
                 clueSummerImage.clearAnimation()
                 clueAutumnImage.clearAnimation()
                 clueSpringImage.clearAnimation()
+
+                handler.postDelayed({
+                    makeDraggable(draggedImageView) // Reapply the draggable behavior
+                    clickable = true
+                }, 500)
             }
 
             else -> {
