@@ -179,6 +179,7 @@ class GameActivity : AppCompatActivity() {
                         if (checkCollisions(imageView)) {
 
                             imageView.setOnTouchListener(null)
+                            clickable = false;
                             view.x = originalX
                             view.y = originalY
                         }
@@ -230,11 +231,16 @@ class GameActivity : AppCompatActivity() {
         view1.getGlobalVisibleRect(rect1)
         view2.getGlobalVisibleRect(rect2)
 
-        val hitboxScaleFactor =
-            0.20f // Adjust this value for the desired hitbox size (e.g., 50% smaller)
-        val widthReduction = (rect1.width() * (1 - hitboxScaleFactor)).toInt() / 2
+        val hitboxScaleFactor = 0.15f // Ajuste general para reducir el tamaño de la hitbox
+
+        // Mantener el hitbox de la altura igual (20% menor)
         val heightReduction = (rect1.height() * (1 - hitboxScaleFactor)).toInt() / 2
 
+        // Para el ancho, reducir menos, hacer la colisión más grande
+        val widthFactor = 0.03f // Menos reducción para el ancho (5% en lugar de 20%)
+        val widthReduction = (rect1.width() * (1 - widthFactor)).toInt() / 2
+
+        // Reducir la hitbox en función de los valores ajustados
         rect1.inset(widthReduction, heightReduction)
 
         return rect1.intersect(rect2)
@@ -326,6 +332,7 @@ class GameActivity : AppCompatActivity() {
                 }
                 handler.postDelayed({
                     makeDraggable(draggedImageView) // Reapply the draggable behavior
+                    clickable = true
                 }, 500)
             }
         }
